@@ -1,0 +1,77 @@
+<div class="page-header page-header-projects">
+    <div class="right_buttons">
+        <%= link_to "Edit", edit_project_path(1), :class => "btn" %>
+        <%= link_to "Delete", new_project_path, :class => "btn btn-danger" %>
+    </div>
+    <h1>Klaim iOS</h1>
+</div>
+
+<ul class="breadcrumb">
+    <li><%= link_to "Projects", projects_path %> <span class="divider">/</span></li>
+  <li class="active">Klaim iOS</li>
+</ul>
+
+<ul class="nav nav-tabs" id="project-tabs">
+    <li class="active"><a href="#languages">Languages</a></li>
+    <li><a href="#files">Files</a></li>
+</ul>
+ 
+<div class="tab-content">
+    <div class="tab-pane active" id="languages">
+        <div class="right_buttons">
+            <%= link_to "Add language", new_translation_path, :class => "btn" %>
+        </div>
+        <table class="table table-languages">
+            <thead>
+                <tr>
+                    <th>Language</th>
+                    <th>Progress</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#"><strong>Francais</strong></a></td>
+                    <td>
+                        <a href="#">
+                            <div class="progress-container">
+                                <div class="progress">
+                                    <div class="bar" style="width: 60%;"></div>
+                                </div>
+                            </div>
+
+                            60/100 strings
+                        </a>
+                    </td>
+                    <td>
+                        <a href="#">
+                            <span class="label label-success">status</span>
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td><a href="#"><strong>English</strong></a></td>
+                    <td>
+                        <a href="#">
+                            <div class="progress-container">
+                                <div class="progress">
+                                    <div class="bar" style="width: 40%;"></div>
+                                </div>
+                            </div>
+
+                            40/100 strings
+                        </a>
+                    </td>
+                    <td>
+                        <a href="#">
+                            <span class="label label-warning">locked</span>
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="tab-pane" id="files">
+        Hey 2
+    </div>
+</div>
