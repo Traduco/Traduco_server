@@ -2,6 +2,12 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+td .progress-container
+{
+    display: inline-block;
+    height: 16px;    
+}
+
 .table-projects,
 .table-languages
 {
@@ -9,22 +15,16 @@
     {
         cursor: pointer;
         min-height: 18px;
-        vertical-align: middle;
         a
         {
             display: block;
             width: 100%;
             height: 100%;
-            color: black;
+            color: black;            
         }
         a:hover
         {
             text-decoration: none;
-        }
-        .progress-container
-        {
-            display: inline-block;
-            height: 16px;
         }
     }
     tbody tr:hover
@@ -41,11 +41,39 @@
     }
 }
 
-.table-languages
+.table-languages,
+.table-files
 {
     .progress-container
     {
         width: 100px;
         margin-right: 10px;
+    }
+}
+
+.table-files
+{
+    td
+    {
+        min-height: 18px;
+        a
+        {
+            display: block;
+            width: 100%;
+            height: 100%;
+            color: black;
+        }
+        a:hover
+        {
+            text-decoration: none;
+        }
+    }
+    td.cell-link
+    {
+        cursor: pointer;
+    }
+    td.cell-link:hover
+    {
+        background-color: #f5f5f5;
     }
 }
