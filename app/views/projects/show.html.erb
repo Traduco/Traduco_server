@@ -1,7 +1,7 @@
 <div class="page-header page-header-projects">
-    <div class="right_buttons">
+    <div class="right-buttons">
         <%= link_to "Edit", edit_project_path(1), :class => "btn" %>
-        <%= link_to "Delete", new_project_path, :class => "btn btn-danger" %>
+        <%= link_to "Delete", "1", :method => :delete, :class => "btn btn-danger" %>
     </div>
     <h1>Klaim iOS</h1>
 </div>
@@ -19,7 +19,7 @@
 <div class="tab-content">
     <div class="tab-pane active" id="languages">
         <div class="right_buttons">
-            <%= link_to "Add new language", new_translation_path, :class => "btn" %>
+            <%= link_to "Add new language", new_project_translation_path("1"), :class => "btn" %>
         </div>
         <table class="table table-languages">
             <thead>

@@ -1,0 +1,85 @@
+<div class="page-header page-header-projects">
+    <div class="right-buttons">
+        <%= link_to "Edit", edit_project_path(1), :class => "btn" %>
+        <%= link_to "Delete", "1", :method => :delete, :class => "btn btn-danger" %>
+    </div>
+    <h1>Klaim iOS <small>Francais</small></h1>
+</div>
+
+<ul class="breadcrumb">
+    <li><%= link_to "Projects", projects_path %> <span class="divider">/</span></li>
+    <li><%= link_to "Klaim iOS", project_path("1") %> <span class="divider">/</span></li>
+    <li class="active">Francais</li>
+</ul>
+
+<div class="float-right">
+        <button class="btn btn-primary"><i class="icon-refresh icon-white"></i> Save</button>
+        <button class="btn"><i class="icon-th-list"></i> View files</button>    
+</div>
+
+<table class="table table-strings">
+    <thead>
+        <tr>
+            <th></th>
+            <th class="cell-key">Key</th>
+            <th class="cell-base">Base</th>
+            <th class="cell-translation">Translation</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr class="row-resting">
+            <td class="cell-status">
+                <i class="icon-ok"></i>
+                <i class="icon-ok icon-white"></i>
+            </td>
+            <td class="cell-key">settings_title_label</td>
+            <td class="cell-base">Settings</td>
+            <td class="cell-translation">Preferences</td>
+        </tr>
+        <tr>
+            <td class="cell-editing" colspan="4">
+                <div class="div-key">
+                    <table>
+                        <tr>
+                            <td class="cell-status">
+                                <i class="icon-ok"></i>
+                                <i class="icon-ok icon-white"></i>
+                            </td>
+                            <td class="cell-edit-key">
+                                settings_header_label
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="div-edit-fields">
+                    <table>
+                        <tr class="row-base">
+                            <td>
+                                <textarea readonly>Super duper title</textarea>
+                            </td>
+                            <td class="cell-comment">
+                                <textarea readonly>This is a text comment.</textarea>
+                            </td>
+                        </tr>
+                        <tr class="row-translation">
+                            <td>
+                                <textarea>Super duper title</textarea>
+                            </td>
+                            <td class="cell-comment">
+                                <textarea>This is a text comment.</textarea>
+                            </td>
+                        </tr>
+                    </table>    
+                </div>
+            </td>
+        </tr>
+        <tr class="row-resting">
+            <td class="cell-status">                
+                <i class="icon-ok icon-white"></i>
+            </td>
+            <td class="cell-key">settings_close_button</td>
+            <td class="cell-base">Close</td>
+            <td class="cell-translation">Fermer</td>
+        </tr>
+    </tbody>
+</table>

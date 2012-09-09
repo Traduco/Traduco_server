@@ -1,6 +1,11 @@
 Traduco::Application.routes.draw do
-  resources :projects
-  resources :translations
+  resources :users
+
+  resources :projects do
+    resources :translations
+    resources :files
+  end
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
