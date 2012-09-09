@@ -1,3 +1,4 @@
+<!-- Header -->
 <div class="page-header page-header-projects">
     <div class="right-buttons">
         <%= link_to "Edit", edit_project_path(1), :class => "btn" %>
@@ -6,20 +7,24 @@
     <h1>Klaim iOS <small>Francais</small></h1>
 </div>
 
+<!-- Breadcrumbs -->
 <ul class="breadcrumb">
     <li><%= link_to "Projects", projects_path %> <span class="divider">/</span></li>
     <li><%= link_to "Klaim iOS", project_path("1") %> <span class="divider">/</span></li>
     <li class="active">Francais</li>
 </ul>
 
+<!-- Action buttons -->
 <div class="float-right">
         <button class="btn btn-primary"><i class="icon-refresh icon-white"></i> Save</button>
-        <button class="btn"><i class="icon-th-list"></i> View files</button>    
+        <a href="#modalFileList" data-toggle="modal" class="btn"><i class="icon-th-list"></i> View files</a>    
 </div>
 
+<!-- List of strings table -->
 <table class="table table-strings">
     <thead>
         <tr>
+            <th></th>
             <th></th>
             <th class="cell-key">Key</th>
             <th class="cell-base">Base</th>
@@ -28,25 +33,39 @@
     </thead>
     <tbody>
         <tr class="row-resting">
-            <td class="cell-status">
+            <td class="cell-translated cell-option">
                 <i class="icon-ok"></i>
                 <i class="icon-ok icon-white"></i>
+            </td>
+            <td class="cell-favorite cell-option cell-option-disabled">
+                <i class="icon-star"></i>
+                <i class="icon-star icon-white"></i>
             </td>
             <td class="cell-key">settings_title_label</td>
             <td class="cell-base">Settings</td>
             <td class="cell-translation">Preferences</td>
         </tr>
         <tr>
-            <td class="cell-editing" colspan="4">
+            <td class="cell-editing" colspan="5">
                 <div class="div-key">
                     <table>
                         <tr>
-                            <td class="cell-status">
+                            <td class="cell-translated cell-option">
                                 <i class="icon-ok"></i>
                                 <i class="icon-ok icon-white"></i>
                             </td>
-                            <td class="cell-edit-key">
+                            <td class="cell-favorite cell-option cell-option-disabled">
+                                <i class="icon-star"></i>
+                                <i class="icon-star icon-white"></i>
+                            </td>
+                            <td class="cell-key">
                                 settings_header_label
+                            </td>
+                            <td class="cell-base">
+                                <div data-bind="text: testvalue().oneLine()"></div>
+                            </td>
+                            <td class="cell-translation">
+                                <div>hdye jdeu jdeu sudkks diek diedk skdi sdkisef kfiek sdkdei desu dsjsiidmj sedjdied jsdu</div>
                             </td>
                         </tr>
                     </table>
@@ -63,7 +82,7 @@
                         </tr>
                         <tr class="row-translation">
                             <td>
-                                <textarea>Super duper title</textarea>
+                                <textarea data-bind="rtValue: testvalue"></textarea>
                             </td>
                             <td class="cell-comment">
                                 <textarea>This is a text comment.</textarea>
@@ -74,8 +93,13 @@
             </td>
         </tr>
         <tr class="row-resting">
-            <td class="cell-status">                
+            <td class="cell-translated cell-option cell-option-disabled">    
+                <i class="icon-ok"></i>
                 <i class="icon-ok icon-white"></i>
+            </td>
+            <td class="cell-favorite cell-option">
+                <i class="icon-star"></i>
+                <i class="icon-star icon-white"></i>
             </td>
             <td class="cell-key">settings_close_button</td>
             <td class="cell-base">Close</td>
@@ -83,3 +107,17 @@
         </tr>
     </tbody>
 </table>
+
+<!-- File list modal -->
+<div class="modal hide fade" id="modalFileList">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h3>Translation files</h3>
+  </div>
+  <div class="modal-body">
+    <p>One fine body…</p>
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+  </div>
+</div>

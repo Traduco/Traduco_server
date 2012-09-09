@@ -1,3 +1,21 @@
-# Place all the behaviors and hooks related to the matching controller here.
-# All this logic will automatically be available in application.js.
-# You can use CoffeeScript in this file: http://jashkenas.github.com/coffee-script/
+$ ->
+	# Define a new binding to handle realtime textchange.
+	ko.bindingHandlers.rtValue =
+		init: (element, valueAccessor) ->
+			jElement = $(element)
+			jElement.bind "textchange", ->
+				observable = valueAccessor()
+				observable $(this).val()
+				return
+			return
+		update: (element, valueAccessor) ->
+			observable = valueAccessor()
+			$(element).val observable()
+			return
+
+	# Define the ViewModel, and bind it.
+	testViewModel = ->
+		@testvalue = ko.observable("tada")
+		return
+
+	ko.applyBindings new testViewModel

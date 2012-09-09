@@ -1,6 +1,6 @@
 .table-strings
 {
-	.cell-status
+	.cell-option
 	{
 		width: 15px;
 		cursor: pointer;
@@ -9,9 +9,10 @@
 			display: none;
 		}
 	}
-	.cell-status:hover
+	.cell-option:hover
 	{
 		background-color: black;
+		opacity: 1;
 		i
 		{
 			display: none;
@@ -21,17 +22,31 @@
 			display: inline-block;
 		}
 	}
+	.cell-option-disabled
+	{
+		opacity: 0.2;
+	}
 	.cell-key
 	{
-		width: 286px;
 		font-weight: bold;
 	}
-	.cell-base
-	{
-		width: 286px;
-	}
+	.cell-key,
+	.cell-base,
 	.cell-translation
 	{
+		max-width: 274px;
+		width: 274px;
+		div
+		{
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;			
+		}
+	}
+	.cell-base,
+	.cell-translation
+	{
+		color: #6e6e6e;
 	}
 	.cell-editing
 	{
@@ -51,7 +66,6 @@
 			.cell-edit-key
 			{
 				font-weight: bold;
-				width: 100%;
 			}
 		}
 		.div-edit-fields

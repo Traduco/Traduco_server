@@ -1,0 +1,1 @@
+String::oneLine = -> @replace /([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, " "
