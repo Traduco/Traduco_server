@@ -12,4 +12,7 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require bootstrap
+//= require knockout-2.1.0.debug
+//= require jquery.textchange
 //= require_tree .
