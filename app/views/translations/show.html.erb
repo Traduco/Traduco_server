@@ -16,97 +16,76 @@
 
 <!-- Action buttons -->
 <div class="float-right">
-        <button class="btn btn-primary"><i class="icon-refresh icon-white"></i> Save</button>
-        <a href="#modalFileList" data-toggle="modal" class="btn"><i class="icon-th-list"></i> View files</a>    
+    <button class="btn btn-primary"><i class="icon-refresh icon-white"></i> Save</button>
+    <a href="#modalFileList" data-toggle="modal" class="btn"><i class="icon-th-list"></i> View files</a>    
 </div>
 
-<!-- List of strings table -->
-<table class="table table-strings">
-    <thead>
-        <tr>
-            <th></th>
-            <th></th>
-            <th class="cell-key">Key</th>
-            <th class="cell-base">Base</th>
-            <th class="cell-translation">Translation</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr class="row-resting">
-            <td class="cell-translated cell-option">
-                <i class="icon-ok"></i>
-                <i class="icon-ok icon-white"></i>
-            </td>
-            <td class="cell-favorite cell-option cell-option-disabled">
-                <i class="icon-star"></i>
-                <i class="icon-star icon-white"></i>
-            </td>
-            <td class="cell-key">settings_title_label</td>
-            <td class="cell-base">Settings</td>
-            <td class="cell-translation">Preferences</td>
-        </tr>
-        <tr>
-            <td class="cell-editing" colspan="5">
-                <div class="div-key">
-                    <table>
-                        <tr>
-                            <td class="cell-translated cell-option">
-                                <i class="icon-ok"></i>
-                                <i class="icon-ok icon-white"></i>
-                            </td>
-                            <td class="cell-favorite cell-option cell-option-disabled">
-                                <i class="icon-star"></i>
-                                <i class="icon-star icon-white"></i>
-                            </td>
-                            <td class="cell-key">
-                                settings_header_label
-                            </td>
-                            <td class="cell-base">
-                                <div data-bind="text: testvalue().oneLine()"></div>
-                            </td>
-                            <td class="cell-translation">
-                                <div>hdye jdeu jdeu sudkks diek diedk skdi sdkisef kfiek sdkdei desu dsjsiidmj sedjdied jsdu</div>
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-                <div class="div-edit-fields">
-                    <table>
-                        <tr class="row-base">
-                            <td>
-                                <textarea readonly>Super duper title</textarea>
-                            </td>
-                            <td class="cell-comment">
-                                <textarea readonly>This is a text comment.</textarea>
-                            </td>
-                        </tr>
-                        <tr class="row-translation">
-                            <td>
-                                <textarea data-bind="rtValue: testvalue"></textarea>
-                            </td>
-                            <td class="cell-comment">
-                                <textarea>This is a text comment.</textarea>
-                            </td>
-                        </tr>
-                    </table>    
-                </div>
-            </td>
-        </tr>
-        <tr class="row-resting">
-            <td class="cell-translated cell-option cell-option-disabled">    
-                <i class="icon-ok"></i>
-                <i class="icon-ok icon-white"></i>
-            </td>
-            <td class="cell-favorite cell-option">
-                <i class="icon-star"></i>
-                <i class="icon-star icon-white"></i>
-            </td>
-            <td class="cell-key">settings_close_button</td>
-            <td class="cell-base">Close</td>
-            <td class="cell-translation">Fermer</td>
-        </tr>
-    </tbody>
-</table>
+<!-- ko if: editingFile -->
+
+    <!-- Current file name. -->
+    <div class="header-filename">
+        <h4 data-bind="text: editingFile().path"></h4>
+    </div>
+
+    <!-- List of strings table -->
+    <table class="table table-strings" data-bind="with: editingFile">
+        <thead>
+            <tr>
+                <th></th>
+                <th></th>
+                <th class="cell-key">Key</th>
+                <th class="cell-base">Base</th>
+                <th class="cell-translation">Translation</th>
+            </tr>
+        </thead>
+        <tbody data-bind="foreach: strings">
+            <tr data-bind="css: { 'row-editing': ($data === $parent.editingString()), 'row-resting': ($data !== $parent.editingString()) }, click: $parent.setEditingString">
+                <td class="cell-translated cell-option" data-bind="css: { 'cell-option-disabled': !isTranslated() }, clickAndStop: toggleTranslated"> 
+                    <i class="icon-ok"></i>
+                    <i class="icon-ok icon-white"></i>
+                </td>
+                <td class="cell-translated cell-option" data-bind="css: { 'cell-option-disabled': !isFavorite() }, clickAndStop: toggleFavorite"> 
+                    <i class="icon-star"></i>
+                    <i class="icon-star icon-white"></i>
+                </td>
+                <td class="cell-key">
+                    <div data-bind="text: key"></div>
+                </td>
+                <td class="cell-base">
+                    <div data-bind="text: base"></div>
+                </td>
+                <td class="cell-translation">
+                    <div data-bind="text: translation"></div>
+                </td>
+            </tr>
+            <tr data-bind="visible: $data === $parent.editingString()">
+                <td class="cell-editing" colspan="5">
+                    <div class="div-edit-fields">
+                        <table>
+                            <tr class="row-base">
+                                <td>
+                                    <textarea data-bind="value: base" readonly></textarea>
+                                </td>
+                                <td class="cell-comment">
+                                    <textarea data-bind="value: baseComment" readonly></textarea>
+                                </td>
+                            </tr>
+                            <tr class="row-translation">
+                                <td>
+                                    <textarea data-bind="rtValue: translation"></textarea>
+                                </td>
+                                <td class="cell-comment">
+                                    <textarea data-bind="rtValue: translationComment"></textarea>
+                                </td>
+                            </tr>
+                        </table>    
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+<!-- /ko -->
 
 <!-- File list modal -->
 <div class="modal hide fade" id="modalFileList">
@@ -115,7 +94,35 @@
     <h3>Translation files</h3>
   </div>
   <div class="modal-body">
-    <p>One fine body…</p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Progress</th>
+            </tr>
+        </thead>
+        <tbody data-bind="foreach: files">
+            <tr data-dismiss="modal" data-bind="click: $parent.setEditingFile">
+                <td>
+                    <span data-bind="text: path"></span>
+                </td>
+                <td>
+                    <div class="progress-container">
+                        <div class="progress">
+                            <div class="bar" data-bind="style: { 'width': translationCompletionPercentage() }"></div>
+                        </div>
+                    </div>
+
+                    <span>
+                        <span data-bind="text: translatedStringCount"></span>
+                        /
+                        <span data-bind="text: stringCount"></span>
+                        strings
+                    </span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
   </div>
   <div class="modal-footer">
     <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>

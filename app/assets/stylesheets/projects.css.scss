@@ -13,14 +13,17 @@ td .progress-container
 {
     td
     {
+        width: 400px;
         cursor: pointer;
-        min-height: 18px;
+        padding: 0px;
         a
         {
             display: block;
+            padding: 8px;
             width: 100%;
             height: 100%;
-            color: black;            
+            color: black;  
+            min-height: 18px;          
         }
         a:hover
         {
@@ -37,17 +40,7 @@ td .progress-container
 {
     .progress-container
     {
-        width: 100%;
-    }
-}
-
-.table-languages,
-.table-files
-{
-    .progress-container
-    {
-        width: 100px;
-        margin-right: 10px;
+        width: 140px;
     }
 }
 
@@ -56,21 +49,24 @@ td .progress-container
     td
     {
         min-height: 18px;
+    }
+    td.cell-link
+    {
+        cursor: pointer;
+        padding: 0px;
         a
         {
             display: block;
+            padding: 8px;
             width: 100%;
             height: 100%;
-            color: black;
+            color: black;  
+            min-height: 18px;  
         }
         a:hover
         {
             text-decoration: none;
         }
-    }
-    td.cell-link
-    {
-        cursor: pointer;
     }
     td.cell-link:hover
     {
