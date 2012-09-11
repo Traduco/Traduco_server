@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120910170822) do
+ActiveRecord::Schema.define(:version => 20120911085615) do
 
   create_table "keys", :force => true do |t|
     t.string   "key"
@@ -41,6 +41,7 @@ ActiveRecord::Schema.define(:version => 20120910170822) do
     t.integer  "repositoryType_id"
     t.datetime "created_at",        :null => false
     t.datetime "updated_at",        :null => false
+    t.boolean  "cloned"
   end
 
   create_table "projects_users", :id => false, :force => true do |t|
