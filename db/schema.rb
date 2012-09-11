@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120909113259) do
+ActiveRecord::Schema.define(:version => 20120910170822) do
 
   create_table "keys", :force => true do |t|
     t.string   "key"
@@ -38,9 +38,9 @@ ActiveRecord::Schema.define(:version => 20120909113259) do
   create_table "projects", :force => true do |t|
     t.string   "name"
     t.integer  "language_id"
-    t.integer  "repository_id"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
+    t.integer  "repositoryType_id"
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
   end
 
   create_table "projects_users", :id => false, :force => true do |t|
@@ -49,15 +49,6 @@ ActiveRecord::Schema.define(:version => 20120909113259) do
   end
 
   add_index "projects_users", ["project_id", "user_id"], :name => "index_projects_users_on_project_id_and_user_id"
-
-  create_table "repositories", :force => true do |t|
-    t.string   "sshKey"
-    t.string   "name"
-    t.string   "address"
-    t.integer  "repositoryType_id"
-    t.datetime "created_at",        :null => false
-    t.datetime "updated_at",        :null => false
-  end
 
   create_table "repository_types", :force => true do |t|
     t.integer  "type"
@@ -85,6 +76,8 @@ ActiveRecord::Schema.define(:version => 20120909113259) do
     t.integer  "project_id"
     t.integer  "language_id"
     t.integer  "value_id"
+    t.boolean  "lock"
+    t.datetime "lockDate"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
   end
