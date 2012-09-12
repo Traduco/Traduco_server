@@ -1,0 +1,20 @@
+<%= form_for project, :html => { :class => "form-horizontal" } do |p| %>
+	<div class="control-group">
+		<%= p.label :name, "Name", :class => "control-label" %>
+	    <div class="controls">
+      		<%= p.text_field :name, :placeHolder => "Name" %>
+	    </div>
+  	</div>
+
+  	<div class="control-group">
+		<%= p.label :users, "Users", :class => "control-label" %>
+	    <div class="controls">
+      		<%= p.select :user_ids, users, {}, { :multiple => true, :size => 5 } %>
+	    </div>
+  	</div>
+
+  	<div class="form-actions">
+  		<%= p.submit "Save", :class => "btn btn-primary" %>
+  		<%= link_to "Cancel", projects_path, :class => "btn" %>
+	</div>
+<% end %>

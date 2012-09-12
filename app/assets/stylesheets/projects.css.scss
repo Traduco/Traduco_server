@@ -13,7 +13,7 @@ td .progress-container
 {
     td
     {
-        width: 400px;
+        max-width: 260px;
         cursor: pointer;
         padding: 0px;
         a
@@ -23,7 +23,10 @@ td .progress-container
             width: 100%;
             height: 100%;
             color: black;  
-            min-height: 18px;          
+            min-height: 18px;    
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;      
         }
         a:hover
         {

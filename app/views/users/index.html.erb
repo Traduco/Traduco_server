@@ -1,0 +1,27 @@
+<div class="page-header page-header-projects">
+    <div class="right-buttons">
+        <%= link_to "New user", new_user_path, :class => "btn" %>
+    </div>
+    <h1>Users</h1>
+</div>
+
+<table class="table table-projects">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% @users.each do |user| %>
+            <tr>
+                <td class="cell-bold">
+                    <%= link_to user.fullName, user %>
+                </td>
+                <td>
+                    <%= link_to user.email, user %>  
+                </td>
+            </tr>
+        <% end %>
+    </tbody>
+</table>

@@ -49,13 +49,13 @@
                     <i class="icon-star icon-white"></i>
                 </td>
                 <td class="cell-key">
-                    <div data-bind="text: key"></div>
+                    <div data-bind="text: key().singleLine()"></div>
                 </td>
                 <td class="cell-base">
-                    <div data-bind="text: base"></div>
+                    <div data-bind="text: base().singleLine()"></div>
                 </td>
                 <td class="cell-translation">
-                    <div data-bind="text: translation"></div>
+                    <div data-bind="text: translation().singleLine()"></div>
                 </td>
             </tr>
             <tr data-bind="visible: $data === $parent.editingString()">
