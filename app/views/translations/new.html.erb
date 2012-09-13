@@ -1,0 +1,18 @@
+<!-- Header -->
+<div class="page-header page-header-projects">
+    <h1><%= @project.name %> <small>New translation</small></h1>
+</div>
+
+<!-- Breadcrumbs -->
+<ul class="breadcrumb">
+    <li><%= link_to "Projects", projects_path %> <span class="divider">/</span></li>
+    <li><%= link_to @project.name, project_path(@project) %> <span class="divider">/</span></li>
+    <li class="active">New translation</li>
+</ul>
+
+<%= render :partial => "translation_edit", :locals => { 
+	:project => @project, 
+	:translation => @translation,
+	:users => @users,
+	:languages => @languages,
+	:cancel_path => project_path(@project) } %>
