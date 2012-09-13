@@ -16,10 +16,10 @@
         <% @users.each do |user| %>
             <tr>
                 <td class="cell-bold">
-                    <%= link_to user.fullName, user %>
+                    <%= link_to user.full_name, edit_user_path(user) %>
                 </td>
                 <td>
-                    <%= link_to user.email, user %>  
+                    <%= link_to user.email, edit_user_path(user) %>  
                 </td>
             </tr>
         <% end %>

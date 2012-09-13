@@ -1,16 +1,17 @@
 <!-- Header -->
 <div class="page-header page-header-projects">
-    <h1>New project</h1>
+    <h1><%= @project.name %> <small>Edit project</small></h1>
 </div>
 
 <!-- Breadcrumbs -->
 <ul class="breadcrumb">
     <li><%= link_to "Projects", projects_path %> <span class="divider">/</span></li>
-    <li class="active">New project</li>
+    <li><%= link_to @project.name, project_path(@project) %> <span class="divider">/</span></li>
+    <li class="active">Edit project</li>
 </ul>
 
 <%= render :partial => "project_edit", :locals => { 
 	:project => @project, 
 	:users => @users,
 	:languages => @languages,
-	:cancel_path => projects_path } %>
+	:cancel_path => project_path(@project) } %>

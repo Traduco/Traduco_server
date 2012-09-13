@@ -1,7 +1,7 @@
 require "bcrypt"
 
 class User < ActiveRecord::Base
-	attr_accessible :email, :firstName, :lastName, :new_password, :new_password_confirm
+	attr_accessible :email, :first_name, :last_name, :new_password, :new_password_confirm
 	attr_accessor :new_password, :new_password_confirm
 
 	has_and_belongs_to_many :languages
@@ -10,8 +10,8 @@ class User < ActiveRecord::Base
 
 	before_save :hash_new_password, :if => :password_changed?
 
-	def fullName
-		self.firstName + " " + self.lastName
+	def full_name
+		self.first_name + " " + self.last_name
 	end
 
 	# By default the form_helpers will set new_password to "",

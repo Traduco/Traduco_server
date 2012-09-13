@@ -13,8 +13,15 @@
 	    </div>
   	</div>
 
+  	<div class="control-group">
+		<%= p.label :default_language, "Base language", :class => "control-label" %>
+	    <div class="controls">
+      		<%= p.select :default_language_id, languages %>
+	    </div>
+  	</div>
+
   	<div class="form-actions">
   		<%= p.submit "Save", :class => "btn btn-primary" %>
-  		<%= link_to "Cancel", projects_path, :class => "btn" %>
+  		<%= link_to "Cancel", cancel_path, :class => "btn" %>
 	</div>
 <% end %>

@@ -23,7 +23,7 @@
                     <%= link_to project.name, project %>
                 </td>
                 <td>
-                    <%= link_to project.users.map { |u| u.fullName }.join(", "), project %>
+                    <%= link_to project.users.map { |u| u.full_name }.join(", "), project %>
                 </td>
                 <td>
                     <a href="#">
