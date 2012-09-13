@@ -11,11 +11,13 @@
   <li class="active"><%= @project.name %></li>
 </ul>
 
+<%= render :partial => "common/alerts" %>
+
 <ul class="nav nav-tabs" id="project-tabs">
     <li class="active"><a href="#languages">Translations</a></li>
     <li><a href="#files">Files</a></li>
 </ul>
- 
+
 <div class="tab-content">
     <div class="tab-pane active" id="languages">
         <div class="right-buttons">
@@ -33,7 +35,7 @@
                 <% @project.translations.each do |translation| %>
                     <tr>
                         <td>
-                            <%= link_to translation.language, project_translation_path(@project, translation) %>
+                            <%= link_to translation.language.name, project_translation_path(@project, translation) %>
                         <td>
                             <a href="#">
                                 <div class="progress-container">
@@ -43,7 +45,7 @@
                                 </div>
 
                                 60/100 strings
-                            </a>
+                            </a>                          
                         </td>
                         <td>
                             <a href="#">

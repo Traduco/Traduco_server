@@ -1,17 +1,17 @@
 <!-- Header -->
 <div class="page-header page-header-projects">
     <div class="right-buttons">
-        <%= link_to "Edit", edit_project_path(1), :class => "btn" %>
-        <%= link_to "Delete", "1", :method => :delete, :class => "btn btn-danger" %>
+        <%= link_to "Edit", edit_project_translation_path(@project, @translation), :class => "btn" %>
+        <button type="button" data-toggle="modal" data-target="#modal_confirm_delete" class="btn btn-danger">Delete</button>
     </div>
-    <h1>Klaim iOS <small>Francais</small></h1>
+    <h1><%= @project.name %> <small><%= @translation.language.name %></small></h1>
 </div>
 
 <!-- Breadcrumbs -->
 <ul class="breadcrumb">
     <li><%= link_to "Projects", projects_path %> <span class="divider">/</span></li>
-    <li><%= link_to "Klaim iOS", project_path("1") %> <span class="divider">/</span></li>
-    <li class="active">Francais</li>
+    <li><%= link_to @project.name, project_path(@project) %> <span class="divider">/</span></li>
+    <li class="active"><%= @translation.language.name %></li>
 </ul>
 
 <!-- Action buttons -->
@@ -128,3 +128,10 @@
     <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
   </div>
 </div>
+
+<%= render :partial => "common/simple_modal", :locals => {
+        :modal_id => "modal_confirm_delete",
+        :title => "Confirm deletion",
+        :message => "Are you sure that you want to delete this translation? This action can't be undone.",
+        :button => link_to("Confirm deletion", [@project, @translation], :method => :delete, :class => "btn btn-danger")
+    } %>

@@ -8,10 +8,10 @@ class ProjectsController < ApplicationController
 
 	def get_project
 		if params.has_key? :id
-			@project = Project.find(params[:id], :include => [
+			@project = Project.find params[:id], :include => [
 					:users,
 					:default_language
-				])
+				]
 		else
 			@project = Project.new
 		end
@@ -26,10 +26,10 @@ class ProjectsController < ApplicationController
 	end
 
 	def show
-		@project = Project.find(params[:id], :include => [
+		@project = Project.find params[:id], :include => [
 		 	:users,
 		 	:translations
-	 	])	
+	 	]
 	end
 
 	def new

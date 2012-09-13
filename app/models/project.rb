@@ -13,7 +13,7 @@ class Project < ActiveRecord::Base
 	before_save :populate_default_language, :if => :default_language_changed?
 
 	def users_changed?
-		self.user_ids.size > 1
+		self.user_ids && self.user_ids.size > 1
 	end
 
 	def default_language_changed?
