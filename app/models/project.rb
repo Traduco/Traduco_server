@@ -1,6 +1,8 @@
 require 'logger'
 require 'rubygems'
 require 'git-ssh-wrapper'
+require 'etc'
+require 'find'
 require_dependency 'extensions/dir_extensions'
 
 class Project < ActiveRecord::Base
@@ -10,6 +12,7 @@ class Project < ActiveRecord::Base
     belongs_to :default_language, :class_name => "Language"
     belongs_to :project_type, :class_name => "ProjectType"
     belongs_to :repository_type, :class_name => "RepositoryType"
+
     has_many :sources
     has_many :translations
     has_and_belongs_to_many :users
@@ -47,6 +50,22 @@ class Project < ActiveRecord::Base
     ensure
         wrapper.unlink
     end
+	
+	def repository_scan
+		self.pull	
+		path_to_search = Rails.root + "/repositories/" + self.id
+		default_language_short = self.default_language.format.split('_')[0]
+		localizable_files = []
+		Find.find(path_to_search) do |path|
+  			localizable_files << path if path =~ /.*\/#{default_language_short}\.lproj\/Localizable.strings$/
+		end
+		return localizable_files
+	end
+
+	def load_file_in_database(type)
+		deserializer = DeserializerFactory.getDeserializer(type)
+		deserializer.deserialize #we need to give him a path/file/etc
+	end
         
     def users_changed?
         self.user_ids && self.user_ids.size > 1
@@ -58,4 +77,5 @@ class Project < ActiveRecord::Base
         self.user_ids.delete ""
         self.users = User.find self.user_ids
     end
+
 end
