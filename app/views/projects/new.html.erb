@@ -1,0 +1,17 @@
+<!-- Header -->
+<div class="page-header page-header-projects">
+    <h1>New project</h1>
+</div>
+
+<!-- Breadcrumbs -->
+<ul class="breadcrumb">
+    <li><%= link_to "Projects", projects_path %> <span class="divider">/</span></li>
+    <li class="active">New project</li>
+</ul>
+
+<%= render :partial => "project_edit", :locals => { 
+	:project => @project, 
+	:users => @users,
+	:languages => @languages,
+	:repository_types => @repository_types,
+	:cancel_path => projects_path } %>

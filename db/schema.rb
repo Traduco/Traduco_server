@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120911085615) do
+ActiveRecord::Schema.define(:version => 20120910170822) do
 
   create_table "keys", :force => true do |t|
     t.string   "key"
@@ -37,6 +37,12 @@ ActiveRecord::Schema.define(:version => 20120911085615) do
 
   create_table "projects", :force => true do |t|
     t.string   "name"
+    t.integer  "default_language_id"
+    t.integer  "repository_type_id"
+    t.string   "repository_address"
+    t.string   "repository_ssh_key"
+    t.datetime "created_at",          :null => false
+    t.datetime "updated_at",          :null => false
     t.integer  "language_id"
     t.integer  "repositoryType_id"
     t.datetime "created_at",        :null => false
@@ -52,7 +58,7 @@ ActiveRecord::Schema.define(:version => 20120911085615) do
   add_index "projects_users", ["project_id", "user_id"], :name => "index_projects_users_on_project_id_and_user_id"
 
   create_table "repository_types", :force => true do |t|
-    t.integer  "type"
+    t.integer  "key"
     t.string   "name"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
@@ -66,11 +72,11 @@ ActiveRecord::Schema.define(:version => 20120911085615) do
   end
 
   create_table "sources", :force => true do |t|
-    t.string   "filePath"
+    t.string   "file_path"
     t.integer  "project_id"
-    t.integer  "sourceType_id"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
+    t.integer  "source_type_id"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
   end
 
   create_table "translations", :force => true do |t|
@@ -78,7 +84,7 @@ ActiveRecord::Schema.define(:version => 20120911085615) do
     t.integer  "language_id"
     t.integer  "value_id"
     t.boolean  "lock"
-    t.datetime "lockDate"
+    t.datetime "lock_date"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
   end
@@ -91,8 +97,8 @@ ActiveRecord::Schema.define(:version => 20120911085615) do
   add_index "translations_users", ["translation_id", "user_id"], :name => "index_translations_users_on_translation_id_and_user_id"
 
   create_table "users", :force => true do |t|
-    t.string   "firstName"
-    t.string   "lastName"
+    t.string   "first_name"
+    t.string   "last_name"
     t.string   "password"
     t.string   "email"
     t.datetime "created_at", :null => false
@@ -101,11 +107,11 @@ ActiveRecord::Schema.define(:version => 20120911085615) do
 
   create_table "values", :force => true do |t|
     t.string   "value"
-    t.boolean  "isTranslated"
-    t.boolean  "isStared"
+    t.boolean  "is_translated"
+    t.boolean  "is_stared"
     t.integer  "key_id"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
   end
 
 end

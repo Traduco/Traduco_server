@@ -1,8 +1,8 @@
 class CreateUsers < ActiveRecord::Migration
   def change
     create_table :users do |t|
-      t.string :firstName
-      t.string :lastName
+      t.string :first_name
+      t.string :last_name
       t.string :password
       t.string :email
 
@@ -21,9 +21,9 @@ class CreateUsers < ActiveRecord::Migration
 	  create_table :languages_users, :id => false do |t|
 	  	 t.references :language, :user
 	  end
+
 	  # creating index for efficiency
 	  add_index :languages_users, [:language_id, :user_id]
-	
 	
 	  # Creating the table to linnk the many-to-many relationship
 	  create_table :projects_users, :id => false do |t|

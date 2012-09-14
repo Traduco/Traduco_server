@@ -1,6 +1,13 @@
 Traduco::Application.routes.draw do
-  resources :projects
-  resources :translations
+  root :to => "projects#index"
+
+  resources :projects do
+    resources :translations
+    resources :files
+  end
+
+  resources :users
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

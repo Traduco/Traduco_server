@@ -5,7 +5,7 @@ class CreateTranslations < ActiveRecord::Migration
     	t.integer :language_id
     	t.integer :value_id
     	t.boolean :lock
-    	t.datetime :lockDate
+    	t.datetime :lock_date
 
       t.timestamps
     end

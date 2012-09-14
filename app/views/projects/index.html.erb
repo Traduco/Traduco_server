@@ -1,51 +1,45 @@
 <div class="page-header page-header-projects">
-    <div class="right_buttons">
+    <div class="right-buttons">
         <%= link_to "New project", new_project_path, :class => "btn" %>
     </div>
     <h1>Projects</h1>
 </div>
 
+<%= render :partial => "common/alerts" %>
+
 <table class="table table-projects">
     <thead>
         <tr>
             <th>Name</th>
-            <th>Admin</th>
+            <th>Administrators</th>
             <th>Progress</th>
             <th>Status</th>
         </tr>
     </thead>
     <tbody>
-        <tr>
-            <td><a href="#"><strong>Klaim iOS</strong></a></td>
-            <td><a href="#">Pierre Laurac Youhou</a></td>
-            <td>
-                <a href="#">
-                    <div class="progress-container">
-                        <div class="progress">
-                            <div class="bar" style="width: 60%;"></div>
+        <% @projects.each do |project| %>
+            <tr>
+                <td class="cell-bold">
+                    <%= link_to project.name, project %>
+                </td>
+                <td>
+                    <%= link_to project.users.map { |u| u.full_name }.join(", "), project %>
+                </td>
+                <td>
+                    <a href="#">
+                        <div class="progress-container">
+                            <div class="progress">
+                                <div class="bar" style="width: 60%;"></div>
+                            </div>
                         </div>
-                    </div>
-                </a>
-            </td>
-            <td>
-                <a href="#">
-                    <span class="label label-success">up-to-date</span>
-                </a>
-            </td>
-        </tr>
-        <tr>
-            <td><strong>Klaim WP7</strong></td>      
-            <td>Quentin Calvez</td>  
-            <td>
-                <div class="progress-container">
-                    <div class="progress">
-                        <div class="bar" style="width: 40%;"></div>
-                    </div>
-                </div>
-            </td>
-            <td>
-                <span class="label label-warning">some uncommited strings</span>
-            </td>
-        </tr>
+                    </a>
+                </td>
+                <td>
+                    <a href="#">
+                        <span class="label label-success">up-to-date</span>
+                    </a>
+                </td>
+            </tr>
+        <% end %>
     </tbody>
 </table>

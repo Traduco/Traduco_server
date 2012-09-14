@@ -1,5 +1,5 @@
 class RepositoryType < ActiveRecord::Base
-  attr_accessible :type, :name
+  attr_accessible :key, :name
   
-  has_many :repositories
+  has_many :projects
 end

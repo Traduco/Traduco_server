@@ -1,0 +1,45 @@
+<%= form_for user, :html => { :class => "form-horizontal" } do |p| %>
+	<legend>General</legend>
+
+	<div class="control-group">
+		<%= p.label :first_name, "First name", :class => "control-label" %>
+	    <div class="controls">
+      		<%= p.text_field :first_name, :placeHolder => "First name" %>
+	    </div>
+  	</div>
+
+  	<div class="control-group">
+		<%= p.label :last_name, "Last name", :class => "control-label" %>
+	    <div class="controls">
+      		<%= p.text_field :last_name, :placeHolder => "Last name" %>
+	    </div>
+  	</div>
+
+  	<div class="control-group">
+		<%= p.label :email, "Email", :class => "control-label" %>
+	    <div class="controls">
+      		<%= p.text_field :email, :placeHolder => "Email" %>
+	    </div>
+  	</div>
+
+  	<legend>Password</legend>
+
+  	<div class="control-group">
+		<%= p.label :new_password, "Password", :class => "control-label" %>
+	    <div class="controls">
+      		<%= p.password_field :new_password, :placeHolder => "Password" %>
+	    </div>
+  	</div>
+
+  	<div class="control-group">
+		<%= p.label :new_password_confirm, "Confirmation", :class => "control-label" %>
+	    <div class="controls">
+      		<%= p.password_field :new_password_confirm, :placeHolder => "Confirmation" %>
+	    </div>
+  	</div>
+
+  	<div class="form-actions">
+  		<%= p.submit "Save", :class => "btn btn-primary" %>
+  		<%= link_to "Cancel", users_path, :class => "btn" %>
+	</div>
+<% end %>

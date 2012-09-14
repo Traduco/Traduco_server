@@ -1,2 +1,57 @@
-class TranslationsController < ApplicationController
+class TranslationsController < ApplicationController	
+	before_filter :layout_setup
+	before_filter :get_data, :only => [:show, :new, :destroy]
+	before_filter :get_additional_data, :only => [:new]
+
+	def layout_setup
+		@tab = :projects
+	end
+
+	def get_data
+		@project = Project.find params[:project_id]
+
+		if params.has_key? :id
+			@translation = Translation.find params[:id], :include => [
+				:users,
+				:language
+			]
+		else
+			@translation = @project.translations.build
+		end
+	end
+
+	def get_additional_data
+		@users = User.all.map { |user| [user.full_name, user.id] }	
+		@languages = Language.all.map { |language| [language.format + " - " + language.name, language.id] }
+	end
+
+	def create		
+		@project = Project.find params[:project_id]
+		@translation = Translation.new(params[:translation])
+
+		@project.translations.push @translation
+
+		@users = User.all.map { |user| [user.full_name, user.id] }	
+		@languages = Language.all.map { |language| [language.format + " - " + language.name, language.id] }
+
+		if @project.save
+			redirect_to project_translation_path(@project, @translation) 
+		else
+			render :action => "new"
+		end
+	end
+
+	def show
+		
+	end
+
+	def destroy
+		@translation.destroy
+
+		redirect_to project_path(@project), :notice => {
+			:type => :success,
+			:title => "Well done!",
+			:message => "The translation for language \"" + @translation.language.name + "\" was deleted successfully."
+		}
+	end
 end

@@ -1,3 +1,158 @@
-// Place all the styles related to the translations controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
+.header-filename
+{
+
+}
+
+.table-strings
+{
+	.cell-option
+	{
+		width: 15px;
+		cursor: pointer;
+		.icon-white
+		{
+			display: none;
+		}
+		a
+		{
+			width: 100%;
+			height: 100%;
+			display: block;
+			div
+			{
+				padding: 8px;
+			}
+		}
+	}
+	.cell-option:hover
+	{
+		background-color: black;
+		opacity: 1;
+		i
+		{
+			display: none;
+		}
+		.icon-white
+		{
+			display: inline-block;
+		}
+	}
+	.cell-option-disabled
+	{
+		opacity: 0.2;
+	}
+	.cell-key
+	{
+		font-weight: bold;
+	}
+	.cell-key,
+	.cell-base,
+	.cell-translation
+	{
+		max-width: 274px;
+		width: 274px;
+		div
+		{
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;			
+		}
+	}
+	.cell-base,
+	.cell-translation
+	{
+		color: #6e6e6e;
+	}
+	.cell-editing
+	{
+		border-top: none;
+		padding: 0px;
+		table
+		{
+			width: 100%;
+		}
+		.div-key
+		{
+			background-color: #f5f5f5;
+			td
+			{
+				border: none;	
+				padding: 8px;		
+			}
+			.cell-edit-key
+			{
+				font-weight: bold;
+			}
+		}
+		.div-edit-fields
+		{
+			tr.row-base
+			{
+				border-bottom: 1px dashed #dddddd;
+			}
+			td
+			{
+				width: 50%;
+				padding: 0px;
+				border-top: none;
+			}
+			textarea
+			{
+				width: 453px;
+				height: 100px;
+				margin: 0px;
+				padding: 8px;
+				outline: none;
+				border: none;
+				border-radius: 0px;
+				resize: none;
+				background-color: #fbfbfb;
+				-webkit-box-shadow: none;
+			       -moz-box-shadow: none;
+			            box-shadow: none;
+			    cursor: text;
+			}
+			.row-translation textarea:focus
+			{
+				outline: none;
+				border: none;
+				background-color: white;
+				-webkit-box-shadow: none;
+			       -moz-box-shadow: none;
+			            box-shadow: none;
+			}
+			.cell-comment
+			{
+				border-left: 1px solid #dddddd;				
+			}
+			.cell-comment textarea
+			{
+				color: #b6b6b6;
+			}
+		}
+	}
+	.row-resting
+	{
+		cursor: pointer;
+	}
+	.row-resting:hover,
+	.row-editing
+	{
+		background-color: #f5f5f5;
+	}
+}
+
+#modalFileList
+{
+	table tbody
+	{
+		tr
+		{
+			cursor: pointer;
+		}
+		tr:hover
+		{
+			background-color: #f5f5f5;
+		}
+	}
+}

@@ -19,11 +19,11 @@
                 <a class="brand" href="/">Traduco</a>
                 <div class="nav-collapse collapse">
                     <ul class="nav">
-                        <li class="active">
+                        <li <%= raw 'class="active"' if @tab == :projects %>>
                             <%= link_to "Projects", projects_path %>
                         </li>
-                        <li>
-                            <a href="#Users">Users</a>
+                        <li <%= raw 'class="active"' if @tab == :users %>>
+                            <%= link_to "Users", users_path %>
                         </li>
                     </ul>
                 </div><!--/.nav-collapse -->
