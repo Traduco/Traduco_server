@@ -10,9 +10,9 @@ namespace :db do
     	l.save
     end
     
- 	File.open('lib/tasks/repoType.txt', 'r').each_line do |line|
+ 	  File.open('lib/tasks/repoType.txt', 'r').each_line do |line|
     	na, ty = line.split ':', 2
-    	r = RepositoryType.new({:type => ty, :name => na})
+    	r = RepositoryType.new({:key => ty, :name => na})
     	r.save
     end   
  

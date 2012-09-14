@@ -19,6 +19,7 @@ class ProjectsController < ApplicationController
 	
 		@users = User.all.map { |user| [user.full_name, user.id] }	
 		@languages = Language.all.map { |language| [language.format + " - " + language.name, language.id] }
+		@repository_types = RepositoryType.all.map { |repository_type| [repository_type.name, repository_type.id] }
 	end
 
 	def index
@@ -55,7 +56,10 @@ class ProjectsController < ApplicationController
 		@project.attributes = params[:project]
 
 		if @project.save
-			redirect_to(@project)
+			redirect_to @project, :notice => {
+				:type => :success,
+				:title => "Saved!"				
+			}
 		else
 			render :action => "edit"
 		end

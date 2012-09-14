@@ -1,4 +1,6 @@
 <%= form_for project, :html => { :class => "form-horizontal" } do |p| %>
+	<legend>Project details</legend>
+
 	<div class="control-group">
 		<%= p.label :name, "Name", :class => "control-label" %>
 	    <div class="controls">
@@ -19,6 +21,29 @@
       		<%= p.select :default_language_id, languages %>
 	    </div>
   	</div>
+
+  	<legend>Repository</legend>
+
+  	<div class="control-group">
+		<%= p.label :repository_type, "Type", :class => "control-label" %>
+	    <div class="controls">
+      		<%= p.select :repository_type_id, repository_types %>
+	    </div>
+  	</div>
+
+	<div class="control-group">
+		<%= p.label :repository_address, "Address", :class => "control-label" %>
+	    <div class="controls">
+      		<%= p.text_field :repository_address, :placeHolder => "Address" %>
+	    </div>
+  	</div>  	
+
+  	<div class="control-group">
+		<%= p.label :repository_ssh_key, "SSH Key", :class => "control-label" %>
+	    <div class="controls">
+      		<%= p.text_area :repository_ssh_key, :placeHolder => "SSH Key", :rows => "5" %>
+	    </div>
+  	</div>  
 
   	<div class="form-actions">
   		<%= p.submit "Save", :class => "btn btn-primary" %>
