@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120910170822) do
+ActiveRecord::Schema.define(:version => 20120914163947) do
 
   create_table "keys", :force => true do |t|
     t.string   "key"
@@ -35,9 +35,17 @@ ActiveRecord::Schema.define(:version => 20120910170822) do
 
   add_index "languages_users", ["language_id", "user_id"], :name => "index_languages_users_on_language_id_and_user_id"
 
+  create_table "project_types", :force => true do |t|
+    t.integer  "key"
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
   create_table "projects", :force => true do |t|
     t.string   "name"
     t.boolean  "cloned"
+    t.integer  "project_type_id"
     t.integer  "default_language_id"
     t.integer  "repository_type_id"
     t.string   "repository_address"

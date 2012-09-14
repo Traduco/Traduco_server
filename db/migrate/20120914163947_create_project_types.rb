@@ -1,6 +1,6 @@
-class CreateRepositoryTypes < ActiveRecord::Migration
+class CreateProjectTypes < ActiveRecord::Migration
     def change
-        create_table :repository_types do |t|
+        create_table :project_types do |t|
             t.integer   :key
             t.string    :name
 

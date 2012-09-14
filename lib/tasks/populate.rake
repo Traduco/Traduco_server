@@ -15,6 +15,12 @@ namespace :db do
     	r = RepositoryType.new({:key => ty, :name => na})
     	r.save
     end   
+
+    File.open('lib/tasks/projectType.txt', 'r').each_line do |line|
+      na, ty = line.split ':', 2
+      r = ProjectType.new({:key => ty, :name => na})
+      r.save
+    end   
  
   end
 end

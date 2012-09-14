@@ -18,6 +18,7 @@ class ProjectsController < ApplicationController
 
 	
 		@users = User.all.map { |user| [user.full_name, user.id] }	
+		@project_types = ProjectType.all.map { |project_type| [project_type.name, project_type.id] }
 		@languages = Language.all.map { |language| [language.format + " - " + language.name, language.id] }
 		@repository_types = RepositoryType.all.map { |repository_type| [repository_type.name, repository_type.id] }
 	end

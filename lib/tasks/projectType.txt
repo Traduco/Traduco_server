@@ -1,0 +1,3 @@
+.strings (iOS):0
+.strings (Android):1
+.resx (.Net):2

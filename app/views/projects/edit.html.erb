@@ -13,6 +13,7 @@
 <%= render :partial => "project_edit", :locals => { 
 	:project => @project, 
 	:users => @users,
+	:project_types => @project_types,
 	:languages => @languages,
 	:repository_types => @repository_types,
 	:cancel_path => project_path(@project) } %>

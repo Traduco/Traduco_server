@@ -16,6 +16,13 @@
   	</div>
 
   	<div class="control-group">
+		<%= p.label :project_type, "Type", :class => "control-label" %>
+	    <div class="controls">
+      		<%= p.select :project_type_id, project_types %>
+	    </div>
+  	</div>
+
+  	<div class="control-group">
 		<%= p.label :default_language, "Base language", :class => "control-label" %>
 	    <div class="controls">
       		<%= p.select :default_language_id, languages %>
