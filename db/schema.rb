@@ -37,17 +37,13 @@ ActiveRecord::Schema.define(:version => 20120910170822) do
 
   create_table "projects", :force => true do |t|
     t.string   "name"
+    t.boolean  "cloned"
     t.integer  "default_language_id"
     t.integer  "repository_type_id"
     t.string   "repository_address"
-    t.string   "repository_ssh_key"
+    t.text     "repository_ssh_key"
     t.datetime "created_at",          :null => false
     t.datetime "updated_at",          :null => false
-    t.integer  "language_id"
-    t.integer  "repositoryType_id"
-    t.datetime "created_at",        :null => false
-    t.datetime "updated_at",        :null => false
-    t.boolean  "cloned"
   end
 
   create_table "projects_users", :id => false, :force => true do |t|

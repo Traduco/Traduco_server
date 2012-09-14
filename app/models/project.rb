@@ -4,16 +4,18 @@ require 'git'
 require 'etc'
 
 class Project < ActiveRecord::Base
-  attr_accessible :name, :repositoryAddress, :sshKey, :cloned
-  
-  belongs_to :repositoryType
-  belongs_to :defaultLanguage, :class_name => "Language", :foreign_key => "language_id"
-  has_one :repository
-  has_many :sources
-  has_many :translations
-  has_and_belongs_to_many :users
+	attr_accessible :name, :default_language_id, :repository_address, :repository_ssh_key, :repository_type_id, :user_ids, :cloned
+  	attr_accessor :user_ids
 
-	def git_pull
+    belongs_to :repository_type, :class_name => "RepositoryType"
+	belongs_to :default_language, :class_name => "Language"
+	has_many :sources
+	has_many :translations
+	has_and_belongs_to_many :users
+
+	before_save :populate_users, :if => :users_changed?
+
+ 	def git_pull
 		unless self.cloned
 			self.git_clone
 			return
@@ -33,17 +35,7 @@ class Project < ActiveRecord::Base
 		self.cloned = true;
 		self.save
 	end
-	attr_accessible :name, :default_language_id, :repository_address, :repository_ssh_key, :repository_type_id, :user_ids
-  	attr_accessor :user_ids
-
-    belongs_to :repository_type, :class_name => "RepositoryType"
-	belongs_to :default_language, :class_name => "Language"
-	has_many :sources
-	has_many :translations
-	has_and_belongs_to_many :users
-
-	before_save :populate_users, :if => :users_changed?
-
+		
 	def users_changed?
 		self.user_ids && self.user_ids.size > 1
 	end
