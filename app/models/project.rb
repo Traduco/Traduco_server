@@ -1,7 +1,7 @@
 require 'logger'
 require 'rubygems'
-require 'git'
-require 'etc'
+require 'git-ssh-wrapper'
+require_dependency 'extensions/dir_extensions'
 
 class Project < ActiveRecord::Base
     attr_accessible :name, :default_language_id, :project_type_id, :repository_address, :repository_ssh_key, :repository_type_id, :user_ids, :cloned
@@ -16,10 +16,10 @@ class Project < ActiveRecord::Base
 
     before_save :populate_users, :if => :users_changed?
 
-    def repository_pull
+    def repository_pull 
         unless self.cloned
             self.git_clone
-            return
+            return 
         end
         l = Logger.new('log/debug.log')
         l.level = Logger::DEBUG
@@ -31,10 +31,21 @@ class Project < ActiveRecord::Base
     end
 
     def repository_clone
-        g = Git.clone('git@github.com:quentez/Klaim-iOS', 'klaim_repo', {:depth => 1, :path => Etc.getpwuid.dir}) 
-        #g = Git.clone('git@github.com:quentez/Klaim-iOS', 'klaim_repo', {:depth => 1})     
+        # Make sure that the directory exists.
+        repository_path = File.join Rails.root, "repositories", self.id.to_s
+        Dir.mkpath repository_path
+
+        # Clone the repository.
+        wrapper = GitSSHWrapper.new(:private_key_path => '~/.ssh/id_rsa', :log_level => 'ERROR')
+        @hey = `env #{wrapper.cmd_prefix} git clone https://github.com/quentez/Klaim-iOS.git #{repository_path}`
+
+        logger.debug @hey
+        
+        # Update the project to indicate that it was cloned.
         self.cloned = true;
         self.save
+    ensure
+        wrapper.unlink
     end
         
     def users_changed?

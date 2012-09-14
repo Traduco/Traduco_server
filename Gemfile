@@ -38,5 +38,5 @@ gem 'bcrypt-ruby', '~> 3.0.0', :require => 'bcrypt'
 # gem 'ruby-debug'
 
 # To use Git command
-gem 'git'
+gem 'git-ssh-wrapper'
 
