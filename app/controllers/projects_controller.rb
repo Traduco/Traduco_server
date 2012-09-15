@@ -33,7 +33,8 @@ class ProjectsController < ApplicationController
 		 	:translations
 	 	]
 
-	 	@project.repository_clone
+	 	#@project.repository_clone
+		@project.repository_scan
 	end
 
 	def new

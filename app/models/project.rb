@@ -3,6 +3,7 @@ require 'rubygems'
 require 'git-ssh-wrapper'
 require 'etc'
 require 'find'
+require 'pp'
 require_dependency 'extensions/dir_extensions'
 
 class Project < ActiveRecord::Base
@@ -39,11 +40,9 @@ class Project < ActiveRecord::Base
         Dir.mkpath repository_path
 
         # Clone the repository.
-        wrapper = GitSSHWrapper.new(:private_key_path => '~/.ssh/id_rsa', :log_level => 'ERROR')
-        @hey = `env #{wrapper.cmd_prefix} git clone https://github.com/quentez/Klaim-iOS.git #{repository_path}`
-
+        wrapper = GitSSHWrapper.new(:private_key => self.repository_ssh_key, :log_level => 'ERROR')
+        @hey = `env #{wrapper.cmd_prefix} git clone #{self.repository_address} #{repository_path} 2>&1`
         logger.debug @hey
-        
         # Update the project to indicate that it was cloned.
         self.cloned = true;
         self.save
@@ -52,13 +51,17 @@ class Project < ActiveRecord::Base
     end
 	
 	def repository_scan
-		self.pull	
-		path_to_search = Rails.root + "/repositories/" + self.id
+		#self.pull	
+		path_to_search = File.join Rails.root, "repositories", self.id.to_s
+		logger.debug path_to_search
 		default_language_short = self.default_language.format.split('_')[0]
+		logger.debug default_language_short
 		localizable_files = []
 		Find.find(path_to_search) do |path|
-  			localizable_files << path if path =~ /.*\/#{default_language_short}\.lproj\/Localizable.strings$/
+			logger.debug path
+  			localizable_files.push(path) if path =~ /.*\/#{default_language_short}\.lproj\/Localizable.strings$/
 		end
+		logger.debug(pp localizable_files)
 		return localizable_files
 	end
 
