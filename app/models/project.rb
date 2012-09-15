@@ -12,6 +12,7 @@ class Project < ActiveRecord::Base
     belongs_to :default_language, :class_name => "Language"
     belongs_to :project_type, :class_name => "ProjectType"
     belongs_to :repository_type, :class_name => "RepositoryType"
+
     has_many :sources
     has_many :translations
     has_and_belongs_to_many :users
@@ -77,4 +78,5 @@ class Project < ActiveRecord::Base
         self.user_ids.delete ""
         self.users = User.find self.user_ids
     end
+
 end
