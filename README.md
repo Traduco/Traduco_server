@@ -4,7 +4,7 @@ Software localization made easy.
 
 ## About
 
-**Traduco** is a _Ruby on Rails_ web application that provides software developer with an easy-to-use localization platform to translate their applications.
+**Traduco** is a _Ruby on Rails_ web application that provides software developers with an easy-to-use localization platform to translate their applications.
 
 This is the workflow that we enable:
 
