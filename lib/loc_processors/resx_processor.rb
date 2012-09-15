@@ -1,0 +1,2 @@
+class ResxProcessor
+end

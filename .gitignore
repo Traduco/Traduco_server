@@ -16,3 +16,4 @@
 .DS_STORE
 *.swp
 *.swo
+/repositories

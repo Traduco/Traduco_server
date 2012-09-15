@@ -32,8 +32,6 @@ class ProjectsController < ApplicationController
 		 	:users,
 		 	:translations
 	 	]
-
-	 	@project.repository_clone
 	end
 
 	def new
