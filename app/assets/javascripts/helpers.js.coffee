@@ -11,7 +11,7 @@ ko.dirtyFlag = (root, isInitiallyDirty) ->
 	_isInitiallyDirty = ko.observable isInitiallyDirty
 
 	result.isDirty = ko.computed ->
-		_isInitiallyDirty || _initialState != ko.toJSON root
+		_isInitiallyDirty() || _initialState() != ko.toJSON root
 
 	result.reset = ->
 		_initialState ko.toJSON(root)

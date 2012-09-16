@@ -25,3 +25,12 @@ ko.bindingHandlers.clickAndStop =
 
 		ko.bindingHandlers.click.init element, newValueAccessor, allBindingsAccessor, viewModel, context
 		
+# Custom event binding for the BLUR event.
+ko.bindingHandlers.blur =
+	init: (element, valueAccessor) ->
+		jElement = $(element)
+		jElement.blur ->
+			handler = valueAccessor()
+			handler()
+			return
+		return

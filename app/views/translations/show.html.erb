@@ -16,7 +16,8 @@
 
 <!-- Action buttons -->
 <div class="float-right">
-    <button class="btn btn-primary"><i class="icon-refresh icon-white"></i> Save</button>
+    <button class="btn btn-primary" data-bind="click: saveModel, visible: !isSaving()"><i class="icon-refresh icon-white"></i> Save</button>
+    <button class="btn btn-primary disabled" data-bind="visible: isSaving()">Saving...</button>
     <a href="#modalFileList" data-toggle="modal" class="btn"><i class="icon-th-list"></i> View files</a>    
 </div>
 
@@ -72,10 +73,10 @@
                             </tr>
                             <tr class="row-translation">
                                 <td>
-                                    <textarea data-bind="rtValue: translatedValue"></textarea>
+                                    <textarea data-bind="rtValue: translatedValue, blur: $root.saveModel"></textarea>
                                 </td>
                                 <td class="cell-comment">
-                                    <textarea data-bind="rtValue: translatedComment"></textarea>
+                                    <textarea data-bind="rtValue: translatedComment, blur: $root.saveModel"></textarea>
                                 </td>
                             </tr>
                         </table>    
