@@ -1,21 +1,11 @@
 <% if flash[:notice] %>
 
-	<%
-		notice = flash[:notice]
+	<% notice = flash[:notice]	%>
 
-		case notice[:type]
-		when :success
-			alert_class = " alert-success"
-		when :error
-			alert_class = " alert-error"
-		else
-			alert_class = ""
-		end
-	%>
-
-	<div class="alert <%= alert_class %>">
-	    <button type="button" class="close" data-dismiss="alert">×</button>
-	    <strong><%= notice[:title] %></strong> <%= notice[:message] %>
-	</div>
+	<%= render :partial => "common/instant_alert", :locals => {
+		:type => notice[:type],
+		:title => notice[:title],
+		:message => notice[:message]
+	} %>
 
 <% end %>

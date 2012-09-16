@@ -15,10 +15,10 @@ ActiveRecord::Schema.define(:version => 20120914163947) do
 
   create_table "keys", :force => true do |t|
     t.string   "key"
-    t.string   "comment"
-    t.integer  "value_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.integer  "source_id"
+    t.integer  "default_value_id"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
   end
 
   create_table "languages", :force => true do |t|
@@ -68,19 +68,11 @@ ActiveRecord::Schema.define(:version => 20120914163947) do
     t.datetime "updated_at", :null => false
   end
 
-  create_table "source_types", :force => true do |t|
-    t.string   "name"
-    t.integer  "type"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-  end
-
   create_table "sources", :force => true do |t|
     t.string   "file_path"
     t.integer  "project_id"
-    t.integer  "source_type_id"
-    t.datetime "created_at",     :null => false
-    t.datetime "updated_at",     :null => false
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "translations", :force => true do |t|
@@ -111,11 +103,13 @@ ActiveRecord::Schema.define(:version => 20120914163947) do
 
   create_table "values", :force => true do |t|
     t.string   "value"
+    t.string   "comment"
     t.boolean  "is_translated"
     t.boolean  "is_stared"
     t.integer  "key_id"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
+    t.integer  "translation_id"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
   end
 
 end

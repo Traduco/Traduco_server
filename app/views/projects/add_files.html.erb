@@ -1,0 +1,55 @@
+<!-- Header -->
+<div class="page-header page-header-projects">
+    <h1><%= @project.name %> <small>Add files</small></h1>
+</div>
+
+<!-- Breadcrumbs -->
+<ul class="breadcrumb">
+    <li><%= link_to "Projects", projects_path %> <span class="divider">/</span></li>
+    <li><%= link_to @project.name, project_path(@project) %> <span class="divider">/</span></li>
+    <li class="active">Add files</li>
+</ul>
+
+<% if !@project.cloned %>
+    <%= render :partial => "common/instant_alert", :locals => {
+        :type => :error,
+        :title => "Error!",
+        :message => "The repository was not cloned yet!"
+    } %>
+<% elseif @new_files.size == 0 %>
+    <%= render :partial => "common/instant_alert", :locals => {
+        :type => :warning,
+        :title => "No files found!",
+        :message => "No new files were found in the repository!"
+    } %>
+<% else %>
+    <%= form_tag({}, { :class => "form-horizontal" }) do %>
+
+        <table class="table table-add-files">
+            <thead>
+                <th></th>
+                <th>File path</th>
+            </thead>
+            <tbody>
+                <% @new_files.each do |file| %>
+
+                    <tr>
+                        <td>
+                            <%= check_box_tag "files[#{md5(file)}]" %>
+                        </td>
+                        <td>
+                            <%= file %>
+                        </td>
+                    </tr>
+
+                <% end %>
+            </tbody>
+        </table>
+
+        <div class="form-actions">
+            <%= submit_tag "Add selected files", :class => "btn btn-primary" %>
+            <%= link_to "Cancel", project_path(@project), :class => "btn" %>
+        </div>
+
+    <% end %>
+<% end %>

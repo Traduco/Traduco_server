@@ -28,8 +28,7 @@ class Project < ActiveRecord::Base
         logger.debug `env #{wrapper.cmd_prefix} git clone #{self.repository_address} #{self.get_repository_path}`
         
         # Update the project to indicate that it was cloned.
-        self.cloned = true;
-        self.save
+        self.cloned = true
     ensure
         wrapper.unlink if wrapper
     end

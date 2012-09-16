@@ -52,10 +52,10 @@
                     <div data-bind="text: key().singleLine()"></div>
                 </td>
                 <td class="cell-base">
-                    <div data-bind="text: base().singleLine()"></div>
+                    <div data-bind="text: originalValue().singleLine()"></div>
                 </td>
                 <td class="cell-translation">
-                    <div data-bind="text: translation().singleLine()"></div>
+                    <div data-bind="text: translatedValue().singleLine()"></div>
                 </td>
             </tr>
             <tr data-bind="visible: $data === $parent.editingString()">
@@ -64,18 +64,18 @@
                         <table>
                             <tr class="row-base">
                                 <td>
-                                    <textarea data-bind="value: base" readonly></textarea>
+                                    <textarea data-bind="value: originalValue" readonly></textarea>
                                 </td>
                                 <td class="cell-comment">
-                                    <textarea data-bind="value: baseComment" readonly></textarea>
+                                    <textarea data-bind="value: originalComment" readonly></textarea>
                                 </td>
                             </tr>
                             <tr class="row-translation">
                                 <td>
-                                    <textarea data-bind="rtValue: translation"></textarea>
+                                    <textarea data-bind="rtValue: translatedValue"></textarea>
                                 </td>
                                 <td class="cell-comment">
-                                    <textarea data-bind="rtValue: translationComment"></textarea>
+                                    <textarea data-bind="rtValue: translatedComment"></textarea>
                                 </td>
                             </tr>
                         </table>    

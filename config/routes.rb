@@ -2,8 +2,13 @@ Traduco::Application.routes.draw do
   root :to => "projects#index"
 
   resources :projects do
-    resources :translations
-    resources :files
+    resources :translations do
+      resources :sources
+    end
+  end
+
+  scope "/projects/:id" do
+    match "/addfiles" => "projects#add_files"
   end
 
   resources :users

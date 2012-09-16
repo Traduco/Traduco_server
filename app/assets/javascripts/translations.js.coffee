@@ -1,14 +1,16 @@
 $ ->
+	pageUrl = window.location.href
+
 	# Define the ViewModels, and bind the view.
-	StringViewModel = (id, key, base, baseComment, translation, translationComment, isTranslated, isFavorite) ->
+	StringViewModel = (id, key, originalValue, originalComment, translatedValue, translatedComment, isTranslated, isFavorite) ->
 		
 		# Properties.
 		@id = id
 		@key = ko.observable(key)
-		@base = ko.observable(base)
-		@baseComment = ko.observable(baseComment)
-		@translation = ko.observable(translation)
-		@translationComment = ko.observable(translationComment)
+		@originalValue = ko.observable(originalValue)
+		@originalComment = ko.observable(originalComment)
+		@translatedValue = ko.observable(translatedValue)
+		@translatedComment = ko.observable(translatedComment)
 		@isTranslated = ko.observable(isTranslated)
 		@isFavorite = ko.observable(isFavorite)
 		@dirtyFlag = ko.dirtyFlag(this)
@@ -51,32 +53,47 @@ $ ->
 			@editingString newEditingString
 			return
 
+		@loadString = =>
+			$.ajax(pageUrl + "/sources/" + @id).done((data) =>
+				@strings($.map(data.strings, (value, index) ->
+					new StringViewModel(
+						value.id,
+						value.key,
+						value.original_value,
+						value.original_comment,
+						value.translated_value,
+						value.translated_comment,
+						value.is_translated,
+						value.is_stared
+					)
+				))
+			)
+			return
+
 		return
 
 	TranslationViewModel = ->
 		
 		# Properties.
 		@files = ko.observableArray()
-		@editingFile = ko.observable()
+		@editingFile = ko.observable(null)
 
 		# Action methods.
 		@setEditingFile = (newEditingFile) =>
 			@editingFile newEditingFile
+			newEditingFile.loadString() if newEditingFile.strings().length == 0
+			return
+
+		# Retrieve a list of files.
+		$.ajax(pageUrl + "/sources").done((data) =>
+			@files($.map(data.sources, (value, index) =>
+				new_file = new FileViewModel(value.id, value.file_path, 1, 1)
+				@setEditingFile(new_file) if @editingFile() == null
+				new_file
+			))
+		)
 
 		return
 
 	viewModel = new TranslationViewModel
-
-	file1 = new FileViewModel(1, "/klaim/Tada/Loc.strings", 1, 2)
-	file1.strings.push new StringViewModel(1, "settings_title", "Settings", "Title of the setting view", "Preferences", "", false, false)
-	file1.strings.push new StringViewModel(2, "settings_close_button", "Close", "Button to close the window", "Fermer", "", true, true)
-	file1.strings.push new StringViewModel(3, "settings_save_button", "Save", "Button to save the settings", "Enregister", "", false, true)
-
-	viewModel.files.push file1
-	viewModel.editingFile file1
-
-	file2 = new FileViewModel(2, "/klaim/HumHum/Loc.strings", 5, 3)
-
-	viewModel.files.push file2
-
 	ko.applyBindings viewModel

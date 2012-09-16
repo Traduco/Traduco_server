@@ -1,6 +1,6 @@
 class Value < ActiveRecord::Base
-  attr_accessible :is_stared, :is_translated, :value
+  attr_accessible :is_stared, :is_translated, :value, :comment
   
   belongs_to :key
-  has_many :translations
+  belongs_to :translation
 end

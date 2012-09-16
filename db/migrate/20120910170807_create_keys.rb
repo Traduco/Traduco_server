@@ -2,8 +2,9 @@ class CreateKeys < ActiveRecord::Migration
   def change
     create_table :keys do |t|
       t.string 	:key
-      t.string 	:comment
-      t.integer	:value_id
+
+      t.integer	:source_id
+      t.integer :default_value_id
 
       t.timestamps
     end

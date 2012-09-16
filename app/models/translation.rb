@@ -2,11 +2,11 @@ class Translation < ActiveRecord::Base
 	attr_accessible :lock, :lock_date, :user_ids, :language_id
 	attr_accessor :user_ids, :language_id
 
-	belongs_to :value
 	belongs_to :language
 	belongs_to :project
 
 	has_and_belongs_to_many :users
+	has_many :values
 
 	before_save :populate_users, :if => :users_changed?
 	before_save :populate_language, :if => :language_changed?

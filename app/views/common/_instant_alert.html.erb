@@ -1,0 +1,15 @@
+<%
+	case type
+	when :warning
+		alert_class = ""
+	when :error
+		alert_class = " alert-error"
+	else
+		alert_class = " alert-success"
+	end
+%>
+
+<div class="alert <%= alert_class %>">
+    <button type="button" class="close" data-dismiss="alert">×</button>
+    <strong><%= title %></strong> <%= message %>
+</div>
