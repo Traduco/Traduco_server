@@ -63,7 +63,7 @@ class ProjectsController < ApplicationController
 
 					# Create the new Source object for this file.
 					new_source = @project.sources.build
-					new_source.file_path = file
+					new_source.file_path = @project.get_relative_path file
 
 					# Create the keys for this file
 					strings.each do |s|

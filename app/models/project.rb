@@ -62,6 +62,11 @@ class Project < ActiveRecord::Base
         # Use the Loc Processor to find the Loc Files in the repository.
         loc_processor.find_files Find.find(self.get_repository_path), self.default_language.format
     end
+
+    def get_relative_path (path)
+        path.slice! get_repository_path
+        path
+    end
         
     def users_changed?
         self.user_ids && self.user_ids.size > 1
