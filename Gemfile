@@ -8,6 +8,10 @@ gem 'rails', '3.2.8'
 gem 'pg'
 gem 'json'
 
+# to run processes in the background
+gem 'delayed_job_active_record'
+gem 'daemons'
+
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
