@@ -1,5 +1,5 @@
 ###### Traduco
-#
+##
 Software localization made easy.
 
 #### About
