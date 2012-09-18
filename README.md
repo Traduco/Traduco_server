@@ -1,4 +1,4 @@
-##
+###
 ###### Traduco
 ######
 Software localization made easy.
