@@ -9,6 +9,8 @@ Traduco::Application.routes.draw do
 
   scope "/projects/:id" do
     match "/addfiles" => "projects#add_files"
+    match "/pull" => "projects#pull"
+    match "/push" => "projects#push"
   end
 
   resources :users
