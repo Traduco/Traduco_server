@@ -9,4 +9,6 @@
     <li class="active">New user</li>
 </ul>
 
-<%= render :partial => "user_edit", :locals => { :user => @user } %>
+<%= render :partial => "user_edit", :locals => { 
+	:user => @user,
+	:languages => @languages } %>

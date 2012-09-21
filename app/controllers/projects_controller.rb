@@ -69,11 +69,11 @@ class ProjectsController < ApplicationController
 					loc_processor = ProcessorFactory.get_processor @project.project_type
 
 					# Use the loc processor to retrieve all the keys and values from that file.
-					strings = loc_processor.parse_file(file)
+					strings = loc_processor.parse_file(@project.get_repository_path + file)
 
 					# Create the new Source object for this file.
 					new_source = @project.sources.build
-					new_source.file_path = @project.get_relative_path file
+					new_source.file_path = file
 
 					# Create the keys for this file
 					strings.each do |s|

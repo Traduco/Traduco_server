@@ -64,12 +64,17 @@ class Project < ActiveRecord::Base
         loc_processor = ProcessorFactory.get_processor self.project_type
 
         # Use the Loc Processor to find the Loc Files in the repository.
-        loc_processor.find_files Find.find(self.get_repository_path), self.default_language.format
+        file_list = loc_processor.find_files Find.find(self.get_repository_path), self.default_language.format
+        file_list.map { |file_path| self.get_relative_path(file_path) }
     end
 
     def get_relative_path (path)
         path.slice! get_repository_path
         path
+    end
+
+    def get_repository_path
+        File.join Rails.root, "repositories", self.id.to_s
     end
         
     def users_changed?
@@ -77,10 +82,6 @@ class Project < ActiveRecord::Base
     end
 
     protected
-
-    def get_repository_path
-        File.join Rails.root, "repositories", self.id.to_s
-    end
 
     def populate_users
         self.user_ids.delete ""

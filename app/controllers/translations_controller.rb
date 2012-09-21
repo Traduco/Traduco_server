@@ -1,7 +1,7 @@
 class TranslationsController < ApplicationController	
 	before_filter :layout_setup
-	before_filter :get_data, :only => [:show, :new, :destroy]
-	before_filter :get_additional_data, :only => [:new]
+	before_filter :get_data, :only => [:show, :new, :edit, :destroy]
+	before_filter :get_additional_data, :only => [:new, :edit]
 
 	def layout_setup
 		@tab = :projects
@@ -41,8 +41,16 @@ class TranslationsController < ApplicationController
 		end
 	end
 
-	def show
-		
+	def update
+		@translation.attributes = params[:translation]
+
+		if @translation.save
+			redirect_to [@project, @translation], :notice => {
+				:title => "Saved!"				
+			}
+		else
+			render :action => "edit"
+		end
 	end
 
 	def destroy

@@ -1,4 +1,6 @@
 $ ->
+	return if $("table-strings").length == 0
+
 	pageUrl = window.location.href
 
 	# Define the ViewModels, and bind the view.
