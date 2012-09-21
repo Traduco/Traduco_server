@@ -1,5 +1,5 @@
 $ ->
-	return if $("table-strings").length == 0
+	return if $(".table-strings").length == 0
 
 	pageUrl = window.location.href
 

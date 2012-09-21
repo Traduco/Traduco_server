@@ -1,6 +1,6 @@
 class TranslationsController < ApplicationController	
 	before_filter :layout_setup
-	before_filter :get_data, :only => [:show, :new, :edit, :destroy]
+	before_filter :get_data, :only => [:show, :new, :edit, :update, :destroy]
 	before_filter :get_additional_data, :only => [:new, :edit]
 
 	def layout_setup
@@ -15,6 +15,7 @@ class TranslationsController < ApplicationController
 				:users,
 				:language
 			]
+			@translation.user_ids = @translation.users.map { |user| user.id }
 		else
 			@translation = @project.translations.build
 		end

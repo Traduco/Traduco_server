@@ -1,5 +1,5 @@
 class Translation < ActiveRecord::Base
-	attr_accessible :lock, :lock_date, :user_ids, :language_id
+	attr_accessible :lock, :lock_date, :user_ids, :language_id, :filter_users
 	attr_accessor :user_ids, :language_id
 
 	belongs_to :language
