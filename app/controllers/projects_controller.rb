@@ -5,7 +5,7 @@ class ProjectsController < ApplicationController
 	include HashingHelpers
 
 	before_filter :layout_setup
-	before_filter :get_project, :only => [:new, :edit, :update, :destroy]
+	before_filter :get_project, :only => [:new, :edit, :update, :destroy, :pull, :push]
 
 	def layout_setup
 		@tab = :projects
@@ -36,6 +36,16 @@ class ProjectsController < ApplicationController
 		 	:users,
 		 	:translations
 	 	]
+	end
+
+	def pull
+		@project.delay.repository_pull
+		redirect_to @project
+	end
+
+	def push
+		@project.delay.repository_push
+		redirect_to @project
 	end
 
 	def add_files

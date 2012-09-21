@@ -26,9 +26,12 @@ class Project < ActiveRecord::Base
         # Clone the repository.
         wrapper = GitSSHWrapper.new(:private_key => self.repository_ssh_key, :log_level => 'ERROR')
         logger.debug `env #{wrapper.cmd_prefix} git clone #{self.repository_address} #{self.get_repository_path}`
-        
+
         # Update the project to indicate that it was cloned.
         self.cloned = true
+        self.save
+
+        logger.debug "Project saved!"
     ensure
         wrapper.unlink if wrapper
     end
@@ -36,6 +39,7 @@ class Project < ActiveRecord::Base
     def repository_pull
         # Make sure that our project was cloned a first time.
         if !self.cloned
+            self.repository_clone
             return
         end
 
@@ -53,7 +57,7 @@ class Project < ActiveRecord::Base
     def repository_scan
         # Make sure that our project was cloned a first time.
         if !self.cloned
-            return
+            return []
         end
 
         # Retrieve the Loc Processor for our Project Type.

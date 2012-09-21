@@ -1,6 +1,6 @@
 <!-- Header -->
 <div class="page-header page-header-projects">
-    <div class="right-buttons">
+    <div class="right-buttons-header">
         <%= link_to "Edit", edit_project_translation_path(@project, @translation), :class => "btn" %>
         <button type="button" data-toggle="modal" data-target="#modal_confirm_delete" class="btn btn-danger">Delete</button>
     </div>
@@ -15,7 +15,7 @@
 </ul>
 
 <!-- Action buttons -->
-<div class="float-right">
+<div class="right-buttons">
     <button class="btn btn-primary" data-bind="click: saveModel, visible: !isSaving()"><i class="icon-refresh icon-white"></i> Save</button>
     <button class="btn btn-primary disabled" data-bind="visible: isSaving()">Saving...</button>
     <a href="#modalFileList" data-toggle="modal" class="btn"><i class="icon-th-list"></i> View files</a>    
@@ -32,8 +32,8 @@
     <table class="table table-strings" data-bind="with: editingFile">
         <thead>
             <tr>
-                <th></th>
-                <th></th>
+                <th class="cell-header-option"></th>
+                <th class="cell-header-option"></th>
                 <th class="cell-key">Key</th>
                 <th class="cell-base">Base</th>
                 <th class="cell-translation">Translation</th>
