@@ -12,7 +12,7 @@ class Translation < ActiveRecord::Base
 	before_save :populate_language, :if => :language_changed?
 
 	def users_changed?
-		self.user_ids && self.user_ids.size > 1
+		self.user_ids
 	end
 
 	def language_changed?

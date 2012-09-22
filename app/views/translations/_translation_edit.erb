@@ -27,12 +27,9 @@
                 :multiple => true, 
                 :size => 5,
                 "data-bind" => "options: filteredUsers,
-                                optionsText: function(user) {
-                                    return user.name
-                                },
-                                optionsValue: function(user) {
-                                    return user.id
-                                }" } %>
+                                optionsText: 'name',
+                                optionsValue: 'id',
+                                selectedOptions: selectedUsers" } %>
         </div>
     </div>
 

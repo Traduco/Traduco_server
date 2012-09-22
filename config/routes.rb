@@ -13,6 +13,8 @@ Traduco::Application.routes.draw do
     match "/push" => "projects#push"
   end
 
+  match "/projects/:project_id/translations/:id/users" => "translations#users"
+
   resources :users
 
   # The priority is based upon order of creation:

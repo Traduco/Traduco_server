@@ -1,6 +1,6 @@
 class TranslationsController < ApplicationController	
 	before_filter :layout_setup
-	before_filter :get_data, :only => [:show, :new, :edit, :update, :destroy]
+	before_filter :get_data, :only => [:show, :users, :new, :edit, :update, :destroy]
 	before_filter :get_additional_data, :only => [:new, :edit]
 
 	def layout_setup
@@ -24,6 +24,19 @@ class TranslationsController < ApplicationController
 	def get_additional_data
 		@users = User.all.map { |user| [user.full_name, user.id] }	
 		@languages = Language.all.map { |language| [language.format + " - " + language.name, language.id] }
+	end
+
+	def users
+		users = User.all
+		translation_user_ids = @translation.users.map { |user| user.id }
+
+		render :json => { 
+					:users => users.map { |user| {
+						:id => user.id,
+						:name => user.full_name,
+						:languages => user.languages.map { |lang| lang.id },
+						:selected => translation_user_ids.include?(user.id)
+				}}}
 	end
 
 	def create		

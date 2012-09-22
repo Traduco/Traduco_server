@@ -12,6 +12,7 @@ $ ->
 
 		# Properties.
 		@users = ko.observableArray()
+		@selectedUsers = ko.observableArray()
 		@language = ko.observable(language)
 		@filterUsers = ko.observable(filterUsers)
 
@@ -25,10 +26,11 @@ $ ->
 
 		# Retrieve the users.
 		$.ajax
-			url: "/users"
+			url: "users"
 			dataType: "json"
 			success: (data) =>
 				@users(data.users)
+				@selectedUsers($.map(data.users.filter((u) -> u.selected), (value) -> value.id))
 
 		return
 

@@ -122,7 +122,7 @@ $ ->
 					url: pageUrl + "/sources/" + value.id,
 					type: "PUT",
 					data: {
-						strings: $.map(filesToUpdate, (value, index) ->
+						strings: $.map(filesToUpdate, (value) ->
 							value.dirtyFlag.reset()
 							return {
 								id: value.id,

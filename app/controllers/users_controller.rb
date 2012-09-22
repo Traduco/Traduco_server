@@ -17,18 +17,6 @@ class UsersController < ApplicationController
 
 	def index
 		@users = User.all
-
-		respond_to do |format|
-			format.html # Show the view.
-			format.json {
-				render :json => { 
-					:users => @users.map { |user| {
-						:id => user.id,
-						:name => user.full_name,
-						:languages => user.languages.map { |lang| lang.id }
-				}}}
-			}
-		end
 	end
 
 	def new

@@ -22,7 +22,7 @@ class User < ActiveRecord::Base
     end
 
     def languages_changed?
-        self.language_ids && self.language_ids.size > 1
+        self.language_ids
     end
 
     private
@@ -35,8 +35,6 @@ class User < ActiveRecord::Base
 
     def populate_languages
         self.language_ids.delete ""
-        logger.debug "HEYHEYHEY"
-        logger.debug self.language_ids
         self.languages = Language.find self.language_ids
     end
 end
