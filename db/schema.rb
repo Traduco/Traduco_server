@@ -95,10 +95,11 @@ ActiveRecord::Schema.define(:version => 20120918230330) do
     t.integer  "project_id"
     t.integer  "language_id"
     t.integer  "value_id"
+    t.boolean  "filter_users"
     t.boolean  "lock"
     t.datetime "lock_date"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
   end
 
   create_table "translations_users", :id => false, :force => true do |t|
@@ -112,9 +113,11 @@ ActiveRecord::Schema.define(:version => 20120918230330) do
     t.string   "first_name"
     t.string   "last_name"
     t.string   "password"
+    t.string   "password_salt"
     t.string   "email"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.boolean  "is_site_admin"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
   end
 
   create_table "values", :force => true do |t|

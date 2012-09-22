@@ -4,6 +4,7 @@ require_dependency 'loc_processors/processor_factory'
 class ProjectsController < ApplicationController
 	include HashingHelpers
 
+	before_filter :check_auth
 	before_filter :layout_setup
 	before_filter :get_project, :only => [:new, :edit, :update, :destroy, :pull, :push]
 
