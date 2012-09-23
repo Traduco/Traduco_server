@@ -44,3 +44,5 @@ gem 'bcrypt-ruby', '~> 3.0.0', :require => 'bcrypt'
 # To use Git command
 gem 'git-ssh-wrapper'
 
+# to parse XML files
+gem 'libxml-ruby'
