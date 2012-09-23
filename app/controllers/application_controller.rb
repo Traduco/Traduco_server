@@ -12,6 +12,16 @@ class ApplicationController < ActionController::Base
         end
     end
 
+    def check_site_admin
+        if !current_user.is_site_admin
+            redirect_to root_url, :notice => {
+                :type => :error,
+                :title => "Forbidden!",
+                :message => "You can't access this area."
+            }
+        end
+    end
+
     private
 
     def current_user

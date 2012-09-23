@@ -1,8 +1,10 @@
 <!-- Header -->
 <div class="page-header page-header-projects">
     <div class="right-buttons-header">
-        <%= link_to "Edit", edit_project_translation_path(@project, @translation), :class => "btn" %>
-        <button type="button" data-toggle="modal" data-target="#modal_confirm_delete" class="btn btn-danger">Delete</button>
+        <% if @is_project_admin %>
+            <%= link_to "Edit", edit_project_translation_path(@project, @translation), :class => "btn" %>
+            <button type="button" data-toggle="modal" data-target="#modal_confirm_delete" class="btn btn-danger">Delete</button>
+        <% end %>
     </div>
     <h1><%= @project.name %> <small><%= @translation.language.name %></small></h1>
 </div>

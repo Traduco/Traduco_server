@@ -61,7 +61,7 @@ class SourcesController < ApplicationController
 			key_value = (@values.select { |v| v.key_id == updated_string[:id] }).first
 			if !key_value
 				key = @source.keys.find(updated_string[:id])
-				key_value = @translation.values.build
+				key_value = Value.new
 
 				key.values << key_value
 				@translation.values << key_value

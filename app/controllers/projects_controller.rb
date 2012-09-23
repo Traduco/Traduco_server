@@ -5,8 +5,11 @@ class ProjectsController < ApplicationController
 	include HashingHelpers
 
 	before_filter :check_auth
+	before_filter :check_site_admin, :only => [:new, :create]
 	before_filter :layout_setup
-	before_filter :get_project, :only => [:new, :edit, :update, :destroy, :pull, :push]
+	before_filter :get_project, :only => [:pull, :push, :add_files, :show, :new, :edit, :update, :destroy]
+	before_filter :get_additional_data, :only => [:pull, :push, :new, :edit, :update, :destroy]
+	before_filter :check_project_admin, :only => [:pull, :push, :add_files, :edit, :update, :destroy]
 
 	def layout_setup
 		@tab = :projects
@@ -21,22 +24,27 @@ class ProjectsController < ApplicationController
 		else
 			@project = Project.new
 		end
+		
+		# Computed values.	
+		@is_project_admin = (@project && (@project.users.map { |user| user.id }).include?(@current_user.id)) || @current_user.is_site_admin
+	end
 
+	def get_additional_data
 		@users = User.all.map { |user| [user.full_name, user.id] }	
 		@project_types = ProjectType.all.map { |project_type| [project_type.name, project_type.id] }
 		@languages = Language.all.map { |language| [language.format + " - " + language.name, language.id] }
 		@repository_types = RepositoryType.all.map { |repository_type| [repository_type.name, repository_type.id] }
 	end
 
-	def index
-		@projects = Project.find(:all, :include => :users)
-	end
-
-	def show
-		@project = Project.find params[:id], :include => [
-		 	:users,
-		 	:translations
-	 	]
+	def check_project_admin
+		if !@is_project_admin
+			redirect_to @project ? @project : root_url, 
+				:notice => {
+					:type => :error,
+					:title => "Forbidden!",
+					:message => "You can't access this area."
+			}
+		end
 	end
 
 	def pull
@@ -51,9 +59,6 @@ class ProjectsController < ApplicationController
 
 	def add_files
 		# Prepare the data for the view and the rest of the process.
-		@project = Project.find params[:id], :include => [
-		 	:sources
-	 	]
 	 	@new_files = @project.repository_scan
 
 	 	# Remove from new_files those which were already added.
@@ -73,17 +78,17 @@ class ProjectsController < ApplicationController
 					strings = loc_processor.parse_file(@project.get_repository_path + file)
 
 					# Create the new Source object for this file.
-					new_source = @project.sources.build
+					new_source = Source.new
 					new_source.file_path = file
 
 					# Create the keys for this file
 					strings.each do |s|
-						new_key = new_source.keys.build
+						new_key = Key.new
 
 						new_key.key = s[:key]
 
 						# Create the corresponding value, in default language, for this key.
-						new_value = new_key.values.build
+						new_value = Value.new
 						new_value.value = s[:value]
 						new_value.comment = s[:comment]
 
@@ -103,7 +108,22 @@ class ProjectsController < ApplicationController
 		end
 	end
 
-	def new
+	def show
+		if @is_project_admin
+			@translations = @project.translations
+		else
+			@translations = @current_user.translations
+		end
+	end
+
+	def index
+		if @current_user.is_site_admin
+			@projects = Project.find(:all, :include => :users)
+		else
+			# Retrieve all the projects for our user (as project admin and translator)
+			@projects = @current_user.projects + @current_user.translations.map { |translation| translation.project }	
+			@projects.uniq { |project| project.id }
+		end
 	end
 
 	def edit

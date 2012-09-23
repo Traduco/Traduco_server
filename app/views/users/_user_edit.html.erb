@@ -1,54 +1,65 @@
 <%= form_for user, :html => { :class => "form-horizontal" } do |u| %>
-	<legend>General</legend>
+    <legend>General</legend>
 
-	<div class="control-group">
-		<%= u.label :first_name, "First name", :class => "control-label" %>
-	    <div class="controls">
-      		<%= u.text_field :first_name, :placeHolder => "First name" %>
-	    </div>
-  	</div>
+    <div class="control-group">
+        <%= u.label :first_name, "First name", :class => "control-label" %>
+        <div class="controls">
+            <%= u.text_field :first_name, :placeHolder => "First name" %>
+        </div>
+    </div>
 
-  	<div class="control-group">
-		<%= u.label :last_name, "Last name", :class => "control-label" %>
-	    <div class="controls">
-      		<%= u.text_field :last_name, :placeHolder => "Last name" %>
-	    </div>
-  	</div>
+    <div class="control-group">
+        <%= u.label :last_name, "Last name", :class => "control-label" %>
+        <div class="controls">
+            <%= u.text_field :last_name, :placeHolder => "Last name" %>
+        </div>
+    </div>
 
-  	<div class="control-group">
-		<%= u.label :email, "Email", :class => "control-label" %>
-	    <div class="controls">
-      		<%= u.text_field :email, :placeHolder => "Email" %>
-	    </div>
-  	</div>
+    <div class="control-group">
+        <%= u.label :email, "Email", :class => "control-label" %>
+        <div class="controls">
+            <%= u.text_field :email, :placeHolder => "Email" %>
+        </div>
+    </div>
 
-  	<legend>Languages</legend>
+    <% if current_user.is_site_admin %>
+        <div class="control-group">
+            <div class="controls">
+                <label class="checkbox">
+                    <%= u.check_box :is_site_admin %>
+                    Is site admin.
+                </label>
+            </div>
+        </div>
+    <% end %>
 
-  	<div class="control-group">
+    <legend>Languages</legend>
+
+    <div class="control-group">
         <%= u.label :languages, "Languages", :class => "control-label" %>
         <div class="controls">
             <%= u.select :language_ids, languages, {}, { :multiple => true, :size => 5 } %>
         </div>
     </div>
 
-  	<legend>Password</legend>
+    <legend>Password</legend>
 
-  	<div class="control-group">
-		<%= u.label :new_password, "Password", :class => "control-label" %>
-	    <div class="controls">
-      		<%= u.password_field :new_password, :placeHolder => "Password" %>
-	    </div>
-  	</div>
-
-  	<div class="control-group">
-		<%= u.label :new_password_confirmation, "Confirmation", :class => "control-label" %>
-	    <div class="controls">
-      		<%= u.password_field :new_password_confirmation, :placeHolder => "Confirmation" %>
+    <div class="control-group">
+        <%= u.label :new_password, "Password", :class => "control-label" %>
+        <div class="controls">
+            <%= u.password_field :new_password, :placeHolder => "Password" %>
+        </div>
     </div>
-  	</div>
 
-  	<div class="form-actions">
-  		<%= u.submit "Save", :class => "btn btn-primary" %>
-  		<%= link_to "Cancel", users_path, :class => "btn" %>
-	</div>
+    <div class="control-group">
+        <%= u.label :new_password_confirmation, "Confirmation", :class => "control-label" %>
+        <div class="controls">
+            <%= u.password_field :new_password_confirmation, :placeHolder => "Confirmation" %>
+    </div>
+    </div>
+
+    <div class="form-actions">
+        <%= u.submit "Save", :class => "btn btn-primary" %>
+        <%= link_to "Cancel", (@is_site_admin ? users_path : root_url), :class => "btn" %>
+    </div>
 <% end %>

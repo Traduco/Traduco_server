@@ -6,9 +6,11 @@ require_dependency 'extensions/dir_extensions'
 require_dependency 'loc_processors/processor_factory'
 
 class Project < ActiveRecord::Base
+    # Attributes.
     attr_accessible :name, :default_language_id, :project_type_id, :repository_address, :repository_ssh_key, :repository_type_id, :user_ids, :cloned
     attr_accessor :user_ids
 
+    # Associations.
     belongs_to :default_language, :class_name => "Language"
     belongs_to :project_type, :class_name => "ProjectType"
     belongs_to :repository_type, :class_name => "RepositoryType"
@@ -17,14 +19,10 @@ class Project < ActiveRecord::Base
     has_many :translations, :dependent => :destroy
     has_and_belongs_to_many :users
 
+    # Validations.
 	validates :name, :presence => true
-	validates :default_language_id, :presence => true
-	validates :project_type_id, :presence => true
-	validates :repository_type_id, :presence => true
-
-    # The minimum is 2 because of a rails bug sending an empty field all the time.
-	validates :user_ids, :presence => true, :length => { :minimum => 2 }
-
+    
+    # Triggers.
     before_save :populate_users, :if => :users_changed?
 
     def repository_clone
