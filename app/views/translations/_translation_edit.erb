@@ -1,20 +1,40 @@
 <%= form_for [project, translation], :html => { :class => "form-horizontal" } do |t| %>
-  	<div class="control-group">
-		<%= t.label :language, "Language", :class => "control-label" %>
-	    <div class="controls">
-      		<%= t.select :language_id, languages %>
-	    </div>
-  	</div>
 
-  	<div class="control-group">
-		<%= t.label :users, "Users", :class => "control-label" %>
-	    <div class="controls">
-      		<%= t.select :user_ids, users, {}, { :multiple => true, :size => 5 } %>
-	    </div>
-  	</div>
+    <% # This is a stupid hack for a stupid bug. %>
+    <% translation.language_id = translation.language.id if translation.language %>
 
-  	<div class="form-actions">
-  		<%= t.submit "Save", :class => "btn btn-primary" %>
-  		<%= link_to "Cancel", cancel_path, :class => "btn" %>
-	</div>
+    <div class="control-group">
+        <%= t.label :language, "Language", :class => "control-label" %>
+        <div class="controls">
+            <%= t.select :language_id, languages, {},
+                :disabled => edit,
+                "data-bind" => "value: language" %>
+        </div>
+    </div>
+
+    <div class="control-group">
+        <div class="controls">
+            <label class="checkbox">
+            <%= t.check_box :filter_users,
+                "data-bind" => "checked: filterUsers" %> Show only compatible users</label>
+        </div>
+    </div>
+
+    <div class="control-group">
+        <%= t.label :users, "Translators", :class => "control-label" %>
+        <div class="controls">
+            <%= t.select :user_ids, [], {}, { 
+                :multiple => true, 
+                :size => 5,
+                "data-bind" => "options: filteredUsers,
+                                optionsText: 'name',
+                                optionsValue: 'id',
+                                selectedOptions: selectedUsers" } %>
+        </div>
+    </div>
+
+    <div class="form-actions">
+        <%= t.submit "Save", :class => "btn btn-primary" %>
+        <%= link_to "Cancel", cancel_path, :class => "btn" %>
+    </div>
 <% end %>

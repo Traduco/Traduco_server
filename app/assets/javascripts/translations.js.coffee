@@ -1,4 +1,6 @@
 $ ->
+	return if $(".table-strings").length == 0
+
 	pageUrl = window.location.href
 
 	# Define the ViewModels, and bind the view.
@@ -120,7 +122,7 @@ $ ->
 					url: pageUrl + "/sources/" + value.id,
 					type: "PUT",
 					data: {
-						strings: $.map(filesToUpdate, (value, index) ->
+						strings: $.map(filesToUpdate, (value) ->
 							value.dirtyFlag.reset()
 							return {
 								id: value.id,

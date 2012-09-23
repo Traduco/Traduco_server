@@ -1,13 +1,18 @@
 class UsersController < ApplicationController
 	before_filter :layout_setup
-	before_filter :get_user, :only => [:edit, :update, :destroy]
+	before_filter :get_data, :only => [:edit, :update, :destroy]
+	before_filter :get_languages, :only => [:new, :edit, :update]
 
 	def layout_setup
 		@tab = :users
 	end
 
-	def get_user
-		@user = User.find(params[:id])		
+	def get_data
+		@user = User.find params[:id], :include => :languages	
+	end
+
+	def get_languages
+		@languages = Language.all.map { |language| [language.name, language.id] }	
 	end
 
 	def index
@@ -19,6 +24,7 @@ class UsersController < ApplicationController
 	end
 
 	def edit
+		@user.language_ids = @user.languages.map { |language| language.id }
 	end
 
 	def create

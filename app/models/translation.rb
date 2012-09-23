@@ -1,5 +1,5 @@
 class Translation < ActiveRecord::Base
-	attr_accessible :lock, :lock_date, :user_ids, :language_id
+	attr_accessible :lock, :lock_date, :user_ids, :language_id, :filter_users
 	attr_accessor :user_ids, :language_id
 
 	belongs_to :language
@@ -12,7 +12,7 @@ class Translation < ActiveRecord::Base
 	before_save :populate_language, :if => :language_changed?
 
 	def users_changed?
-		self.user_ids && self.user_ids.size > 1
+		self.user_ids
 	end
 
 	def language_changed?

@@ -12,7 +12,9 @@
     <li class="active">Edit user</li>
 </ul>
 
-<%= render :partial => "user_edit", :locals => { :user => @user } %>
+<%= render :partial => "user_edit", :locals => { 
+    :user => @user,
+    :languages => @languages } %>
 
 <%= render :partial => "common/simple_modal", :locals => {
         :modal_id => "modal_confirm_delete",

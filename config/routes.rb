@@ -13,7 +13,13 @@ Traduco::Application.routes.draw do
     match "/push" => "projects#push"
   end
 
+  match "/projects/:project_id/translations/:id/users" => "translations#users"
+  match "/login" => "sessions#new", :as => "login", :via => :get
+  match "/login" => "sessions#create", :via => :post
+  match "/logout" => "sessions#destroy", :as => "logout"
+
   resources :users
+  resources :sessions
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
