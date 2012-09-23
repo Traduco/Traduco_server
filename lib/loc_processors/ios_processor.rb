@@ -56,18 +56,38 @@ class IOSProcessor
 	end	
 
 	def write_file (data, original_file_path, language_format)
-		# we are going to write this file into a folder called language_format.lproj
-		# this will be at the root of the repo except if this folder exists already 
-		# somewhere else in the repo folder
-		#---------------------------------------------------------------------------
-		files = self.find_files( path, language_format)
-		file_path = ''
+		
+		# For iOS, we only need the first two letters of the language format
+		#-------------------------------------------------------------------
+		format = language_format.split('_')[0]
+		# we need to know if we are writing Localizable.strings or any other file
+		#------------------------------------------------------------------------
+		file_name = File.basename(original_file_path, ".strings")
+			
+		# finding where to put the new file
+		#----------------------------------
+		original_directory = File.dirname(original_file_path)
+		parent_path = File.join(original_directory, '..')
+		all_translation_directories = File.expand_path(parent_path)
+		directory_to_create_file =  File.join(all_translation_directories, "#{format}.lproj")
 
-		if files.empty? 
-			file_path = path + 'Localizable.strings'
-		else 
-			file_path = files[0]
+		# do we need to create that directory ?
+		#--------------------------------------
+		if ! Dir.exist?(directory_to_create_file)
+			Dir.mkdir(directory_to_create_file)
 		end
+
+		file_to_create = File.join(directory_to_create_file, "#{file_name}.strings")
+		file = File.new(file_to_create, 'w:UTF-16LE')
+		data.each do |hash|
+			if ! hash[:comment].empty?
+				file.puts("/* #{hash[:comment]} */")
+			end
+			line = "\"#{hash[:key]}\" = \"#{hash[:value]}\";"
+			file.puts(line)
+			file.puts()
+		end
+		file.close
 		
 		# fetching the data and writing it in the file
 		#---------------------------------------------
