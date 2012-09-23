@@ -1,4 +1,6 @@
 class UsersController < ApplicationController
+	
+	before_filter :check_auth
 	before_filter :layout_setup
 	before_filter :get_data, :only => [:edit, :update, :destroy]
 	before_filter :get_languages, :only => [:new, :edit, :update]

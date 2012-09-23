@@ -21,7 +21,9 @@ class Project < ActiveRecord::Base
 	validates :default_language_id, :presence => true
 	validates :project_type_id, :presence => true
 	validates :repository_type_id, :presence => true
-	validates :user_ids, :presence => true, :length => { :minimum => 1 }
+
+    # The minimum is 2 because of a rails bug sending an empty field all the time.
+	validates :user_ids, :presence => true, :length => { :minimum => 2 }
 
     before_save :populate_users, :if => :users_changed?
 
@@ -59,7 +61,7 @@ class Project < ActiveRecord::Base
     def repository_scan
         # Make sure that our project was cloned a first time.
         if !self.cloned
-            return
+            return []
         end
 
         # Retrieve the Loc Processor for our Project Type.

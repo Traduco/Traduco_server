@@ -1,4 +1,6 @@
 class SourcesController < ApplicationController
+	
+	before_filter :check_auth
 	before_filter :get_data
 	before_filter :get_source, :only => [:show, :update]
 

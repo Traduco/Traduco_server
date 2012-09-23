@@ -1,4 +1,6 @@
-class TranslationsController < ApplicationController	
+class TranslationsController < ApplicationController
+
+	before_filter :check_auth	
 	before_filter :layout_setup
 	before_filter :get_data, :only => [:show, :users, :new, :edit, :update, :destroy]
 	before_filter :get_additional_data, :only => [:new, :edit]
