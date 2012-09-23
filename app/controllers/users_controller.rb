@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
 	
 	before_filter :check_auth
+	before_filter :check_site_admin, :only => [:index, :new, :create, :destroy]
 	before_filter :layout_setup
 	before_filter :get_data, :only => [:edit, :update, :destroy]
 	before_filter :get_languages, :only => [:new, :edit, :update]
@@ -10,7 +11,11 @@ class UsersController < ApplicationController
 	end
 
 	def get_data
-		@user = User.find params[:id], :include => :languages	
+		if @current_user.is_site_admin
+			@user = User.find params[:id], :include => :languages	
+		else
+			@user = @current_user
+		end
 	end
 
 	def get_languages
@@ -46,9 +51,10 @@ class UsersController < ApplicationController
 		@user.attributes = params[:user]
 
 		if @user.save
-			redirect_to users_path, :notice => {
-				:type => :success,
-				:title => "Saved!"
+			redirect_to @current_user.is_site_admin ? users_path : root_url, 
+				:notice => {
+					:type => :success,
+					:title => "Saved!"
 			}
 		else
 			render :action => "edit"

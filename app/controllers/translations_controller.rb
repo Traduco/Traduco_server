@@ -1,9 +1,11 @@
 class TranslationsController < ApplicationController
 
-	before_filter :check_auth	
+	before_filter :check_auth
 	before_filter :layout_setup
-	before_filter :get_data, :only => [:show, :users, :new, :edit, :update, :destroy]
-	before_filter :get_additional_data, :only => [:new, :edit]
+	before_filter :get_data, :only => [:show, :users, :new, :create, :edit, :update, :destroy]
+	before_filter :get_additional_data, :only => [:new, :edit, :create, :update]
+	before_filter :check_project_admin, :only => [:users, :new, :edit, :create, :update, :destroy]
+	before_filter :check_translator
 
 	def layout_setup
 		@tab = :projects
@@ -19,8 +21,20 @@ class TranslationsController < ApplicationController
 			]
 			@translation.user_ids = @translation.users.map { |user| user.id }
 		else
-			@translation = @project.translations.build
+			@translation = Translation.new
 		end
+
+		# Computed values.	
+		@is_project_admin = (@project && (@project.users.map { |user| user.id }).include?(@current_user.id)) || @current_user.is_site_admin
+		@is_translator = (@translation && (@translation.users.map { |user| user.id }).include?(@current_user.id)) || @is_project_admin
+	end
+
+	def check_project_admin
+		redirect_to_project if !@is_project_admin
+	end
+
+	def check_translator
+		redirect_to_project if !@is_translator
 	end
 
 	def get_additional_data
@@ -30,25 +44,20 @@ class TranslationsController < ApplicationController
 
 	def users
 		users = User.all
-		translation_user_ids = @translation.users.map { |user| user.id }
+		translation_user_ids = @translation.users.map { |user| user.id } if @translation
 
 		render :json => { 
 					:users => users.map { |user| {
 						:id => user.id,
 						:name => user.full_name,
 						:languages => user.languages.map { |lang| lang.id },
-						:selected => translation_user_ids.include?(user.id)
+						:selected => @translation && translation_user_ids.include?(user.id)
 				}}}
 	end
 
-	def create		
-		@project = Project.find params[:project_id]
+	def create
 		@translation = Translation.new(params[:translation])
-
-		@project.translations.push @translation
-
-		@users = User.all.map { |user| [user.full_name, user.id] }	
-		@languages = Language.all.map { |language| [language.format + " - " + language.name, language.id] }
+		@project.translations << @translation
 
 		if @project.save
 			redirect_to project_translation_path(@project, @translation) 
@@ -76,6 +85,17 @@ class TranslationsController < ApplicationController
 			:type => :success,
 			:title => "Well done!",
 			:message => "The translation for language \"" + @translation.language.name + "\" was deleted successfully."
+		}
+	end
+
+	protected
+
+	def redirect_to_project
+		redirect_to @project ? @project : root_url, 
+			:notice => {
+				:type => :error,
+				:title => "Forbidden!",
+				:message => "You can't access this area."
 		}
 	end
 end
