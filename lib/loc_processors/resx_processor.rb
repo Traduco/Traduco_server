@@ -14,15 +14,14 @@ class ResxProcessor
 	def parse_file (file_path)
 		parser = XML::Parser.file(file_path)
 		document = parser.parse # gives a parsed document
-		nodes = document.find('/root/data')
-		to_return = Array.new
-		nodes.each do |node|
-			hash = {}
-			hash[:value] = node.find_first("value").content
-			hash[:key] = node["name"]
-			hash[:comment] = ""
-			hash[:comment] = node.find_first("comment").content if node.find_first("comment")
-			to_return.push(hash)
+		nodes = document.find("/root/data")
+		to_return = []
+		nodes.each do |node|	
+			to_return << {
+				:value		=> node.find_first("value").content
+				:key 		=> node["name"]
+				:comment	=> node.find_first("comment") ? node.find_first("comment").content : ""
+			}
 		end
 		to_return
 	end
