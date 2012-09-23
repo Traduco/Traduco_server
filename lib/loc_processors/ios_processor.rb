@@ -55,7 +55,24 @@ class IOSProcessor
 		result
 	end	
 
-	def write_file (data, language_format)
+	def write_file (data, original_file_path, language_format)
+		# we are going to write this file into a folder called language_format.lproj
+		# this will be at the root of the repo except if this folder exists already 
+		# somewhere else in the repo folder
+		#---------------------------------------------------------------------------
+		files = self.find_files( path, language_format)
+		file_path = ''
 
+		if files.empty? 
+			file_path = path + 'Localizable.strings'
+		else 
+			file_path = files[0]
+		end
+		
+		# fetching the data and writing it in the file
+		#---------------------------------------------
+
+		# what's the format for that ? what's data ?
+		
 	end
 end
