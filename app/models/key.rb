@@ -3,5 +3,5 @@ class Key < ActiveRecord::Base
   
   belongs_to :source
   belongs_to :default_value, :class_name => "Value"
-  has_many :values
+  has_many :values, :dependent => :destroy_all
 end

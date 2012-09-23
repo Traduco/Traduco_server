@@ -7,6 +7,8 @@ class Translation < ActiveRecord::Base
 
 	has_and_belongs_to_many :users
 	has_many :values
+	
+	validates :language_id, :presence => true, :length => { :minimum => 1 }	
 
 	before_save :populate_users, :if => :users_changed?
 	before_save :populate_language, :if => :language_changed?

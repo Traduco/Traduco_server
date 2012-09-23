@@ -7,6 +7,11 @@ class User < ActiveRecord::Base
     has_and_belongs_to_many :languages
     has_and_belongs_to_many :translations
     has_and_belongs_to_many :projects
+	
+	validates :new_password, :confirmation => :true
+	validates :email, :presence => true, :format => { :with => /[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}/ }
+	validates :first_name, :presence => true
+	validates :last_name, :presence => true	
 
     before_save :hash_new_password, :if => :password_changed?
     before_save :populate_languages, :if => :languages_changed?

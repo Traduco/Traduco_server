@@ -13,9 +13,15 @@ class Project < ActiveRecord::Base
     belongs_to :project_type, :class_name => "ProjectType"
     belongs_to :repository_type, :class_name => "RepositoryType"
 
-    has_many :sources
-    has_many :translations
+    has_many :sources, :dependent => :destroy
+    has_many :translations, :dependent => :destroy
     has_and_belongs_to_many :users
+
+	validates :name, :presence => true
+	validates :default_language_id, :presence => true
+	validates :project_type_id, :presence => true
+	validates :repository_type_id, :presence => true
+	validates :user_ids, :presence => true, :length => { :minimum => 1 }
 
     before_save :populate_users, :if => :users_changed?
 
@@ -26,12 +32,9 @@ class Project < ActiveRecord::Base
         # Clone the repository.
         wrapper = GitSSHWrapper.new(:private_key => self.repository_ssh_key, :log_level => 'ERROR')
         logger.debug `env #{wrapper.cmd_prefix} git clone #{self.repository_address} #{self.get_repository_path}`
-
+        
         # Update the project to indicate that it was cloned.
         self.cloned = true
-        self.save
-
-        logger.debug "Project saved!"
     ensure
         wrapper.unlink if wrapper
     end
@@ -39,7 +42,6 @@ class Project < ActiveRecord::Base
     def repository_pull
         # Make sure that our project was cloned a first time.
         if !self.cloned
-            self.repository_clone
             return
         end
 
@@ -57,7 +59,7 @@ class Project < ActiveRecord::Base
     def repository_scan
         # Make sure that our project was cloned a first time.
         if !self.cloned
-            return []
+            return
         end
 
         # Retrieve the Loc Processor for our Project Type.
