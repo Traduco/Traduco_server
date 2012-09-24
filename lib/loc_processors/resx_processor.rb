@@ -41,11 +41,24 @@ class ResxProcessor
 		# we can now modify the values based on the received data
 		#--------------------------------------------------------
 		data.each do |hash|
-		
+			nodes = document.find("/root/data[@name = '#{hash[:key]}']")
+			if nodes
+				node = nodes[0]
+				node.find_first("value").content = hash[:value]
+				if ! hash[:comment].empty?
+					if node.find_first("comment")
+						node.find_first("comment").content = hash[:comment]
+					else
+						comment = XML::Node.new("comment")
+						comment.content = hash[:comment]
+						node << comment
+					end
+				end
+			end	
 		end
  
 		# we now have to save this document to a different file
 		#------------------------------------------------------
-		document.save(file_to_create, :indent => true)
+		document.save(file_to_create, :indent => true, :encoding => XML::Encoding::UTF_8)
 	end	
 end
