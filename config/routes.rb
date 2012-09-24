@@ -5,6 +5,7 @@ Traduco::Application.routes.draw do
         match "/addfiles" => "projects#add_files"
         match "/pull" => "projects#pull"
         match "/push" => "projects#push"
+        match "/settab" => "projects#set_tab"
     end
 
     match "/projects/:project_id/translations/:id/users" => "translations#users"
@@ -17,6 +18,7 @@ Traduco::Application.routes.draw do
     resources :sessions
 
     resources :projects do
+        resources :sources
         resources :translations do
             resources :sources
         end

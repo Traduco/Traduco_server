@@ -1,8 +1,8 @@
 class CreateValues < ActiveRecord::Migration
   def change
     create_table :values do |t|
-      t.string :value
-      t.string :comment
+      t.text :value
+      t.text :comment
 
       t.boolean :is_translated
       t.boolean :is_stared

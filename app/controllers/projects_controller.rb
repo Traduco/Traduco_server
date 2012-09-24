@@ -7,9 +7,10 @@ class ProjectsController < ApplicationController
 	before_filter :check_auth
 	before_filter :check_site_admin, :only => [:new, :create]
 	before_filter :layout_setup
-	before_filter :get_project, :only => [:pull, :push, :add_files, :show, :new, :edit, :update, :destroy]
+	before_filter :get_project, :only => [:pull, :push, :add_files, :set_tab, :show, :new, :edit, :update, :destroy]
 	before_filter :get_additional_data, :only => [:pull, :push, :new, :edit, :update, :destroy]
 	before_filter :check_project_admin, :only => [:pull, :push, :add_files, :edit, :update, :destroy]
+	before_filter :check_translator, :only => [:show, :set_tab]
 
 	def layout_setup
 		@tab = :projects
@@ -24,9 +25,6 @@ class ProjectsController < ApplicationController
 		else
 			@project = Project.new
 		end
-		
-		# Computed values.	
-		@is_project_admin = (@project && (@project.users.map { |user| user.id }).include?(@current_user.id)) || @current_user.is_site_admin
 	end
 
 	def get_additional_data
@@ -36,23 +34,20 @@ class ProjectsController < ApplicationController
 		@repository_types = RepositoryType.all.map { |repository_type| [repository_type.name, repository_type.id] }
 	end
 
-	def check_project_admin
-		if !@is_project_admin
-			redirect_to @project ? @project : root_url, 
-				:notice => {
-					:type => :error,
-					:title => "Forbidden!",
-					:message => "You can't access this area."
-			}
-		end
-	end
-
 	def pull
 		@project.delay.repository_pull
 		redirect_to @project
 	end
 
 	def push
+		if !@project.cloned
+			redirect_to @project, :notice => {
+				:type => :error,
+		        :title => "Error!",
+		        :message => "The repository was not cloned yet!"
+			}
+		end
+
 		@project.delay.repository_push
 		redirect_to @project
 	end
@@ -108,21 +103,36 @@ class ProjectsController < ApplicationController
 		end
 	end
 
+	def set_tab
+		if params[:project_tab] == "files"
+			tab = :files
+		else
+			tab = :translations
+		end
+
+		session[project_tab_session_key] = tab
+
+		render :json => {}
+	end
+
 	def show
-		if @is_project_admin
+		if is_project_admin
 			@translations = @project.translations
 		else
 			@translations = @current_user.translations
 		end
+
+		# Tab.
+		@tab = session[project_tab_session_key] ? session[project_tab_session_key] : :translations
 	end
 
 	def index
-		if @current_user.is_site_admin
+		if is_site_admin
 			@projects = Project.find(:all, :include => :users)
 		else
 			# Retrieve all the projects for our user (as project admin and translator)
 			@projects = @current_user.projects + @current_user.translations.map { |translation| translation.project }	
-			@projects.uniq { |project| project.id }
+			@projects.uniq! { |project| project.id }
 		end
 	end
 
@@ -162,5 +172,11 @@ class ProjectsController < ApplicationController
 			:title => "Well done!",
 			:message => "The project \"" + @project.name + "\" was deleted successfully."
 		}
+	end
+
+	protected
+
+	def project_tab_session_key
+		"project_tab_#{@project.id}"
 	end
 end

@@ -5,6 +5,7 @@ class IOSProcessor
 		file_paths.each do |file_path|
 			found_file_paths << file_path if file_path =~ /\/#{language_format}\.lproj\/(.*).strings$/
 		end
+		
 		found_file_paths
 	end
 
@@ -88,11 +89,7 @@ class IOSProcessor
 			file.puts()
 		end
 		file.close
-		
-		# fetching the data and writing it in the file
-		#---------------------------------------------
 
-		# what's the format for that ? what's data ?
-		
+		file_to_create
 	end
 end

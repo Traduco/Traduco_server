@@ -23,18 +23,6 @@ class TranslationsController < ApplicationController
 		else
 			@translation = Translation.new
 		end
-
-		# Computed values.	
-		@is_project_admin = (@project && (@project.users.map { |user| user.id }).include?(@current_user.id)) || @current_user.is_site_admin
-		@is_translator = (@translation && (@translation.users.map { |user| user.id }).include?(@current_user.id)) || @is_project_admin
-	end
-
-	def check_project_admin
-		redirect_to_project if !@is_project_admin
-	end
-
-	def check_translator
-		redirect_to_project if !@is_translator
 	end
 
 	def get_additional_data
@@ -85,17 +73,6 @@ class TranslationsController < ApplicationController
 			:type => :success,
 			:title => "Well done!",
 			:message => "The translation for language \"" + @translation.language.name + "\" was deleted successfully."
-		}
-	end
-
-	protected
-
-	def redirect_to_project
-		redirect_to @project ? @project : root_url, 
-			:notice => {
-				:type => :error,
-				:title => "Forbidden!",
-				:message => "You can't access this area."
 		}
 	end
 end

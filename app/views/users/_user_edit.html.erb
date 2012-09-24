@@ -22,7 +22,7 @@
         </div>
     </div>
 
-    <% if current_user.is_site_admin %>
+    <% if is_site_admin %>
         <div class="control-group">
             <div class="controls">
                 <label class="checkbox">
@@ -60,6 +60,6 @@
 
     <div class="form-actions">
         <%= u.submit "Save", :class => "btn btn-primary" %>
-        <%= link_to "Cancel", (@is_site_admin ? users_path : root_url), :class => "btn" %>
+        <%= link_to "Cancel", (is_site_admin ? users_path : root_url), :class => "btn" %>
     </div>
 <% end %>

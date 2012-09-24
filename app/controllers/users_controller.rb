@@ -11,7 +11,7 @@ class UsersController < ApplicationController
 	end
 
 	def get_data
-		if @current_user.is_site_admin
+		if is_site_admin
 			@user = User.find params[:id], :include => :languages	
 		else
 			@user = @current_user
@@ -51,7 +51,7 @@ class UsersController < ApplicationController
 		@user.attributes = params[:user]
 
 		if @user.save
-			redirect_to @current_user.is_site_admin ? users_path : root_url, 
+			redirect_to is_site_admin ? users_path : root_url, 
 				:notice => {
 					:type => :success,
 					:title => "Saved!"

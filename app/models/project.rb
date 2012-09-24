@@ -34,7 +34,9 @@ class Project < ActiveRecord::Base
         logger.debug `env #{wrapper.cmd_prefix} git clone #{self.repository_address} #{self.get_repository_path}`
         
         # Update the project to indicate that it was cloned.
-        self.cloned = true
+        self.update_attributes(
+            :cloned => true
+        )
     ensure
         wrapper.unlink if wrapper
     end
@@ -42,6 +44,7 @@ class Project < ActiveRecord::Base
     def repository_pull
         # Make sure that our project was cloned a first time.
         if !self.cloned
+            self.repository_clone
             return
         end
 
@@ -53,7 +56,53 @@ class Project < ActiveRecord::Base
     end
 
     def repository_push
+        # Pull the repository first to ensure we are up-to-date.
+        self.repository_pull
 
+        # Retrieve the Localization Processor for our project type.
+        loc_processor = ProcessorFactory.get_processor self.project_type
+
+        file_list = []
+
+        # For each source, write the resource file for each.
+        self.sources.each do |source|
+            self.translations.each do |translation|
+                translation_values = translation.values
+                keys = source.keys.includes(:default_value)
+                
+                data = []
+
+                # Iterate over the keys to create our data array.
+                keys.each do |key|
+                    key_value = (translation_values.select { |v| v.key_id == key.id }).first
+
+                    data << {
+                        :key => key.key,
+                        :value => key_value ? key_value.value : key.default_value.value,
+                        :comment => key_value && !key_value.comment.empty? ? key_value.comment : key.default_value.comment
+                    }
+                end
+
+                # Write the keys to the file.
+                file_path = loc_processor.write_file(data, 
+                    File.join(get_repository_path, source.file_path), 
+                    translation.language.format)
+
+                file_list << get_relative_path(file_path)[1..-1]
+            end
+        end
+
+        # Add the files to the repository.
+        wrapper = GitSSHWrapper.new(:private_key => self.repository_ssh_key, :log_level => 'ERROR')
+        logger.debug `cd #{self.get_repository_path} && env #{wrapper.cmd_prefix} git add #{file_list.join(" ")}`
+
+        # Commit those added files.
+        logger.debug `cd #{self.get_repository_path} && env #{wrapper.cmd_prefix} git commit -am "Traduco Commit of '#{self.name}'."`
+
+        # Push the repository.
+        logger.debug `cd #{self.get_repository_path} && env #{wrapper.cmd_prefix} git push origin master`
+    ensure
+        wrapper.unlink if wrapper
     end
 
     def repository_scan

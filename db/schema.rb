@@ -121,8 +121,8 @@ ActiveRecord::Schema.define(:version => 20120918130445) do
   end
 
   create_table "values", :force => true do |t|
-    t.string   "value"
-    t.string   "comment"
+    t.text     "value"
+    t.text     "comment"
     t.boolean  "is_translated"
     t.boolean  "is_stared"
     t.integer  "key_id"

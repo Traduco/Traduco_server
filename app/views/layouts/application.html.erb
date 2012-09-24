@@ -24,7 +24,7 @@
                             <li<%= raw ' class="active"' if @tab == :projects %>>
                                 <%= link_to "Projects", projects_path %>
                             </li>
-                            <% if current_user.is_site_admin %>
+                            <% if is_site_admin %>
                                 <li<%= raw ' class="active"' if @tab == :users %>>
                                     <%= link_to "Users", users_path %>
                                 </li>

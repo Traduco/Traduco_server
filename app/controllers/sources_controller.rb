@@ -3,10 +3,12 @@ class SourcesController < ApplicationController
 	before_filter :check_auth
 	before_filter :get_data
 	before_filter :get_source, :only => [:show, :update]
+	before_filter :check_translator
+	before_filter :check_project_admin, :only => [:destroy]
 
 	def get_data
 		@project = Project.find params[:project_id]
-		@translation = Translation.find params[:translation_id]
+		@translation = Translation.find params[:translation_id] if params[:translation_id]
 	end
 
 	def get_source
@@ -15,7 +17,7 @@ class SourcesController < ApplicationController
 		# Retrieve all the values for this translation and this source.
 		@values = Value \
 			.joins(:key) \
-			.where("keys.source_id = #{@source.id} and values.translation_id = #{@translation.id}")
+			.where("keys.source_id = #{@source.id} and values.translation_id = #{@translation.id}")		
 	end
 
 	def index
@@ -78,6 +80,17 @@ class SourcesController < ApplicationController
 
 		render :json => {
 			:status => "success"
+		}
+	end
+
+	def destroy
+		@source = Source.find params[:id]
+		@source.destroy
+
+		redirect_to @project, :notice => {
+			:type => :success,
+			:title => "Well done!",
+			:message => "The file was deleted successfully."
 		}
 	end
 end

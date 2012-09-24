@@ -1,6 +1,6 @@
 <div class="page-header page-header-projects">
     <div class="right-buttons-header">
-        <% if @is_project_admin %>
+        <% if is_project_admin %>
             <%= link_to "Edit", edit_project_path(@project), :class => "btn" %>
             <button type="button" data-toggle="modal" data-target="#modal_confirm_delete" class="btn btn-danger">Delete</button>
         <% end %>
@@ -16,16 +16,16 @@
 <%= render :partial => "common/alerts" %>
 
 <ul class="nav nav-tabs" id="project-tabs">
-    <li class="active"><a href="#languages">Translations</a></li>
+    <li<%= raw ' class="active"' if @tab == :translations || !is_project_admin %>><a data-tabname="translations" href="#translations">Translations</a></li>
 
-    <% if @is_project_admin %>
-        <li><a href="#files">Files</a></li>
+    <% if is_project_admin %>
+        <li<%= raw ' class="active"' if @tab == :files %>><a data-tabname="files" href="#files">Files</a></li>
     <% end %>
 </ul>
 
 <div class="tab-content">
-    <div class="tab-pane active" id="languages">
-        <% if @is_project_admin %>
+    <div class="tab-pane<%= raw " active" if @tab == :translations || !is_project_admin %>" id="translations">
+        <% if is_project_admin %>
             <div class="right-buttons">
                 <%= link_to "Add new translation", new_project_translation_path(@project), :class => "btn" %>
             </div>
@@ -64,8 +64,8 @@
             </tbody>
         </table>
     </div>
-    <% if @is_project_admin %>
-        <div class="tab-pane" id="files">
+    <% if is_project_admin %>
+        <div class="tab-pane<%= raw " active" if @tab == :files %>" id="files">
             <div class="right-buttons">
                 <%= link_to "Pull", action_project_path(@project, "pull"), :class => "btn btn-primary" %>
                 <%= link_to "Push", action_project_path(@project, "push"), :class => "btn btn-info" %>
@@ -93,9 +93,9 @@
                                 60/100 strings
                             </td>
                             <td class="cell-link">
-                                <a href="#">
+                                <%= link_to project_source_path(@project, source), :method => :delete do %>
                                     <i class="icon-remove"></i> Delete
-                                </a>
+                                <% end %>
                             </td>
                         </tr>
                     <% end %>
@@ -105,7 +105,7 @@
     <% end %>
 </div>
 
-<% if @is_project_admin %>
+<% if is_project_admin %>
     <%= render :partial => "common/simple_modal", :locals => {
             :modal_id => "modal_confirm_delete",
             :title => "Confirm deletion",
