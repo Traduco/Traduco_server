@@ -6,7 +6,7 @@ class ResxProcessor
         found_file_paths = []
         
         file_paths.each do |file_path|
-        	file_path.encode! "UTF-8"
+        	file_path.encode! "UTF-8", "UTF-8", :invalid => :replace
             found_file_paths << file_path if (file_path =~ /.*\.resx/ \
             	&& file_path !~ /.*\.[a-zA-z\-]{2,5}\.resx/)
         end
