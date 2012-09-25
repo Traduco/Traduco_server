@@ -69,7 +69,7 @@ class Project < ActiveRecord::Base
             self.translations.each do |translation|
                 translation_values = translation.values
                 keys = source.keys.includes(:default_value)
-                
+
                 data = []
 
                 # Iterate over the keys to create our data array.
@@ -115,8 +115,42 @@ class Project < ActiveRecord::Base
         loc_processor = ProcessorFactory.get_processor self.project_type
 
         # Use the Loc Processor to find the Loc Files in the repository.
-        file_list = loc_processor.find_files Find.find(self.get_repository_path), self.default_language.format
+        file_list = loc_processor.find_files self.get_repository_path, self.default_language.format
         file_list.map { |file_path| self.get_relative_path(file_path) }
+    end
+
+    def import_file (file_path)
+        # Retrieve a Loc Process to do the file parsing.
+        loc_processor = ProcessorFactory.get_processor self.project_type
+
+        # Use the loc processor to retrieve all the keys and values from that file.
+        strings = loc_processor.parse_file(get_repository_path + file_path)
+
+        # Create the new Source object for this file.
+        new_source = Source.new
+        new_source.file_path = file_path
+
+        # Create the keys for this file
+        strings.each do |s|
+            new_key = Key.new
+
+            new_key.key = s[:key]
+
+            # Create the corresponding value, in default language, for this key.
+            new_value = Value.new
+            new_value.value = s[:value]
+            new_value.comment = s[:comment]
+
+            new_key.default_value = new_value
+            new_source.keys << new_key
+        end
+
+        self.sources << new_source
+
+        # For each translation in the project, try to import the translation files corresponding to this new file.
+        self.translations.each do |translation|
+            translation.import_file new_source
+        end
     end
 
     def get_relative_path (path)

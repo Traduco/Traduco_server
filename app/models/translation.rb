@@ -22,6 +22,39 @@ class Translation < ActiveRecord::Base
         !self.language_id.blank?
     end
 
+    def import_file (source)
+        # Retrieve a Loc Process to do the file parsing.
+        loc_processor = ProcessorFactory.get_processor self.project.project_type
+
+        # Find the path of our translation file.
+        file_path, directory_path = loc_processor.find_translation_file(self.project.get_repository_path + source.file_path, self.language.format)
+
+        # Use the loc processor to retrieve all the keys and values from that file.
+        strings = loc_processor.parse_file(file_path)
+
+        # Return if the file wasn't found.
+        return if !strings
+
+        keys = source.keys.includes(:default_value)
+
+        # Create the keys for this file
+        strings.each do |s|
+            key = (keys.select { |k| k.key == s[:key] }).first
+
+            next if !key \
+                || (s[:value] == key.default_value.value \
+                    && s[:comment] == key.default_value.comment)
+
+            # Create the corresponding value, for this key.
+            new_value = Value.new
+            new_value.value = s[:value]
+            new_value.comment = s[:comment]
+
+            key.values << new_value
+            self.values << new_value
+        end
+    end
+
     private
 
     def populate_users

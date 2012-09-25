@@ -17,7 +17,8 @@ class SourcesController < ApplicationController
 		# Retrieve all the values for this translation and this source.
 		@values = Value \
 			.joins(:key) \
-			.where("keys.source_id = #{@source.id} and values.translation_id = #{@translation.id}")		
+			.where("keys.source_id = #{@source.id} and values.translation_id = #{@translation.id}") \
+			.readonly(false)
 	end
 
 	def index
@@ -60,7 +61,7 @@ class SourcesController < ApplicationController
 		strings = params[:strings]
 		strings.values.each do |updated_string|
 			# Find the corresponding value, or create it.
-			key_value = (@values.select { |v| v.key_id == updated_string[:id] }).first
+			key_value = (@values.select { |v| v.key_id.to_s == updated_string[:id] }).first
 			if !key_value
 				key = @source.keys.find(updated_string[:id])
 				key_value = Value.new

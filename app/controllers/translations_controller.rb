@@ -47,6 +47,11 @@ class TranslationsController < ApplicationController
 		@translation = Translation.new(params[:translation])
 		@project.translations << @translation
 
+		# If translation files already exists, import them in the translation.
+		@project.sources.each do |source|
+			@translation.import_file source
+		end
+
 		if @project.save
 			redirect_to project_translation_path(@project, @translation) 
 		else

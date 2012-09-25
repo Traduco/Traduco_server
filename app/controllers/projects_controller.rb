@@ -65,33 +65,7 @@ class ProjectsController < ApplicationController
 			@new_files.each do |file|
 				# Check if this file must be parsed and included in the database.
 				if files_request.keys.include? md5(file)
-
-					# Retrieve a Loc Process to do the file parsing.
-					loc_processor = ProcessorFactory.get_processor @project.project_type
-
-					# Use the loc processor to retrieve all the keys and values from that file.
-					strings = loc_processor.parse_file(@project.get_repository_path + file)
-
-					# Create the new Source object for this file.
-					new_source = Source.new
-					new_source.file_path = file
-
-					# Create the keys for this file
-					strings.each do |s|
-						new_key = Key.new
-
-						new_key.key = s[:key]
-
-						# Create the corresponding value, in default language, for this key.
-						new_value = Value.new
-						new_value.value = s[:value]
-						new_value.comment = s[:comment]
-
-						new_key.default_value = new_value
-						new_source.keys << new_key
-					end
-
-					@project.sources << new_source
+					@project.import_file file
 				end
 			end
 

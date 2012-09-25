@@ -1,5 +1,6 @@
 class IOSProcessor
-	def find_files (file_paths, language_format)
+	def find_files (base_path, language_format)
+		file_paths = Find.find(base_path)
 		found_file_paths = []
 
 		file_paths.each do |file_path|
@@ -9,19 +10,34 @@ class IOSProcessor
 		found_file_paths
 	end
 
+	def find_translation_file (original_file_path, language_format)
+		# For iOS, we only need the first two letters of the Language Format.
+		format = language_format.split("_")[0]
+
+		# Find the File Name and the Parent Directory Path.
+		file_name = File.basename original_file_path
+		parent_directory_path = File.expand_path("..", File.dirname(original_file_path))
+
+		# Return the path of the Translation File for the specified Language Format.
+		translation_directory_path = File.join parent_directory_path, "#{format}.lproj"
+		translation_file_path = File.join translation_directory_path, file_name
+	
+		return translation_file_path, translation_directory_path
+	end
+
 	def parse_file (file_path)
+		# Check file existence.
+		return if !File.exist? file_path
+
 		lines = []
 		result = []
 
 		# Open the file and read its content.
-		# TODO: A solution must be found for this encoding problem!
 		File.open(file_path, "rb:UTF-16LE") do |f|
 			lines = f.readlines
 		end
 
-		if lines.size == 0
-			return
-		end
+		return if lines.size == 0
 
 		# Get the file encoding.
 		encoding = lines[0].encoding
@@ -57,39 +73,23 @@ class IOSProcessor
 	end	
 
 	def write_file (data, original_file_path, language_format)
-		
-		# For iOS, we only need the first two letters of the language format
-		#-------------------------------------------------------------------
-		format = language_format.split('_')[0]
-		# we need to know if we are writing Localizable.strings or any other file
-		#------------------------------------------------------------------------
-		file_name = File.basename(original_file_path, ".strings")
-			
-		# finding where to put the new file
-		#----------------------------------
-		original_directory = File.dirname(original_file_path)
-		parent_path = File.join(original_directory, '..')
-		all_translation_directories = File.expand_path(parent_path)
-		directory_to_create_file =  File.join(all_translation_directories, "#{format}.lproj")
+		# Find the file name and parent directory of the 
+		translation_file_path, translation_directory_path = find_translation_file original_file_path, language_format
 
-		# do we need to create that directory ?
-		#--------------------------------------
-		if ! Dir.exist?(directory_to_create_file)
-			Dir.mkdir(directory_to_create_file)
-		end
+		# Make sure that the directory exists.
+		Dir.mkpath translation_directory_path
 
-		file_to_create = File.join(directory_to_create_file, "#{file_name}.strings")
-		file = File.new(file_to_create, 'w:UTF-16LE')
+		file = File.new(translation_file_path, 'w:UTF-16LE')
 		data.each do |hash|
 			if ! hash[:comment].empty?
 				file.puts("/* #{hash[:comment]} */")
 			end
 			line = "\"#{hash[:key]}\" = \"#{hash[:value]}\";"
-			file.puts(line)
-			file.puts()
+			file.puts line
+			file.puts
 		end
 		file.close
 
-		file_to_create
+		translation_file_path
 	end
 end
