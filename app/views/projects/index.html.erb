@@ -29,7 +29,7 @@
                     <a href="#">
                         <div class="progress-container">
                             <div class="progress">
-                                <div class="bar" style="width: 60%;"></div>
+                                <div class="bar" style="width: <%= get_percentage(project[:translated_strings], project[:total_strings]) %>%;"></div>
                             </div>
                         </div>
                     </a>

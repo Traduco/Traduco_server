@@ -98,6 +98,17 @@ class ProjectsController < ApplicationController
 
 		# Tab.
 		@tab = session[project_tab_session_key] ? session[project_tab_session_key] : :translations
+		
+		@project[:total_strings] = get_total_keys(@project)
+		
+		@project.sources.each do |source|
+			source[:translated_strings] = source.keys.joins(:values).where('values.is_translated = true').count
+			source[:total_strings] = source.keys.count * @project.translations.count
+		end
+		
+		@translations.each do |translation|
+			translation[:translated_strings] = translation.values.where(:is_translated => true).count
+		end
 	end
 
 	def index
@@ -107,6 +118,11 @@ class ProjectsController < ApplicationController
 			# Retrieve all the projects for our user (as project admin and translator)
 			@projects = @current_user.projects + @current_user.translations.map { |translation| translation.project }	
 			@projects.uniq! { |project| project.id }
+		end
+		
+		@projects.each do |project|
+			project[:total_strings] = get_total_keys(project) * project.translations.count
+			project[:translated_strings] = project.translations.joins(:values).where('values.is_translated = true').count
 		end
 	end
 
@@ -152,5 +168,9 @@ class ProjectsController < ApplicationController
 
 	def project_tab_session_key
 		"project_tab_#{@project.id}"
+	end
+	
+	def get_total_keys(project)
+		return project.sources.joins(:keys).count
 	end
 end
