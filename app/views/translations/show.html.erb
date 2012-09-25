@@ -20,6 +20,8 @@
 <div class="right-buttons">
     <button class="btn btn-primary" data-bind="click: saveModel, visible: !isSaving()"><i class="icon-refresh icon-white"></i> Save</button>
     <button class="btn btn-primary disabled" data-bind="visible: isSaving()">Saving...</button>
+    <button class="btn" data-bind="click: toggleFilterTranslated, css: { 'btn-warning': filterTranslated }"><i class="icon-ok" data-bind="css: { 'icon-white': filterTranslated }"></i></button>
+    <button class="btn" data-bind="click: toggleFilterFavorite, css: { 'btn-warning': filterFavorite }"><i class="icon-star" data-bind="css: { 'icon-white': filterFavorite }"></i></button>
     <a href="#modalFileList" data-toggle="modal" class="btn"><i class="icon-th-list"></i> View files</a>    
 </div>
 
@@ -41,7 +43,7 @@
                 <th class="cell-translation">Translation</th>
             </tr>
         </thead>
-        <tbody data-bind="foreach: strings">
+        <tbody data-bind="foreach: filteredStrings">
             <tr data-bind="css: { 'row-editing': ($data === $parent.editingString()), 'row-resting': ($data !== $parent.editingString()) }, click: $parent.setEditingString">
                 <td class="cell-translated cell-option" data-bind="css: { 'cell-option-disabled': !isTranslated() }, clickAndStop: toggleTranslated"> 
                     <i class="icon-ok"></i>

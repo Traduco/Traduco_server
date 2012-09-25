@@ -42,6 +42,7 @@ $ ->
 		_stringCount = stringCount
 		_translatedStringCount = translatedStringCount
 
+		# Computed properties.
 		@stringCount = ko.computed (->
 			return @strings().length if @strings().length > 0
 			_stringCount
@@ -53,7 +54,14 @@ $ ->
 		), this
 
 		@translationCompletionPercentage = ko.computed (->
-			helpers.toCssPercentage @translatedStringCount() / @stringCount()), this
+			helpers.toCssPercentage @translatedStringCount() / @stringCount()
+		), this
+
+		@filteredStrings = ko.computed (->
+			@strings().filter((s) -> 
+				(!viewModel.filterTranslated() || !s.isTranslated()) && (!viewModel.filterFavorite() || s.isFavorite())
+			)
+		), this
 
 		# Action methods.
 		@setEditingString = (newEditingString) =>
@@ -84,6 +92,9 @@ $ ->
 		# Properties.
 		@files = ko.observableArray()
 		@editingFile = ko.observable(null)
+
+		@filterTranslated = ko.observable(false)
+		@filterFavorite = ko.observable(false)
 
 		# Computed properties.
 		@isSaving = ko.computed (=>
@@ -140,6 +151,12 @@ $ ->
 				return
 			)
 			return
+
+		@toggleFilterTranslated = =>
+			@filterTranslated(!@filterTranslated())
+
+		@toggleFilterFavorite = =>
+			@filterFavorite(!@filterFavorite())
 
 		# Retrieve a list of files.
 		$.ajax(pageUrl + "/sources").done((data) =>
