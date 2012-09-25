@@ -50,7 +50,7 @@ class Project < ActiveRecord::Base
 
         # Pull the repository.
         wrapper = GitSSHWrapper.new(:private_key => self.repository_ssh_key, :log_level => 'ERROR')
-        logger.debug `cd #{self.get_repository_path} && env #{wrapper.cmd_prefix} git pull `
+        logger.debug `cd #{self.get_repository_path} && env #{wrapper.cmd_prefix} git pull`
 
         # Update the keys and their default_values.
         loc_processor = ProcessorFactory.get_processor self.project_type
