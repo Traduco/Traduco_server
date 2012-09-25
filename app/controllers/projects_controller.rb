@@ -48,7 +48,7 @@ class ProjectsController < ApplicationController
 			}
 		end
 
-		@project.repository_push
+		@project.delay.repository_push
 		redirect_to @project
 	end
 
