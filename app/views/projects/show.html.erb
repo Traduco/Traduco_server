@@ -47,11 +47,11 @@
                             <a href="#">
                                 <div class="progress-container">
                                     <div class="progress">
-                                        <div class="bar" style="width: 60%;"></div>
+                                        <div class="bar" style="width: <%= get_percentage(translation[:translated_strings], @project[:total_strings]) %>%;"></div>
                                     </div>
                                 </div>
 
-                                60/100 strings
+                                <%= translation[:translated_strings] %>/<%= @project[:total_strings] %> strings
                             </a>                          
                         </td>
                         <td>
@@ -86,11 +86,11 @@
                             <td>
                                 <div class="progress-container">
                                     <div class="progress">
-                                        <div class="bar" style="width: 60%;"></div>
+                                        <div class="bar" style="width: <%= get_percentage(source[:translated_strings], source[:total_strings]) %>%;"></div>
                                     </div>
                                 </div>
 
-                                60/100 strings
+                                <%= get_percentage(source[:translated_strings], source[:total_strings]) %>% of <%= source.keys.count %> strings
                             </td>
                             <td class="cell-link">
                                 <%= link_to project_source_path(@project, source), :method => :delete do %>
