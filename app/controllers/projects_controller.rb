@@ -102,8 +102,8 @@ class ProjectsController < ApplicationController
 		@project[:total_strings] = get_total_keys(@project)
 		
 		@project.sources.each do |source|
-			source[:translated_strings] = source.keys.joins(:values).where('values.is_translated = true').count
 			source[:total_strings] = source.keys.count * @project.translations.count
+			source[:translated_strings] = source.keys.joins(:values).where("values.is_translated = true").count
 		end
 		
 		@translations.each do |translation|
@@ -121,8 +121,8 @@ class ProjectsController < ApplicationController
 		end
 		
 		@projects.each do |project|
+			project[:translated_strings] = project.translations.joins(:values).where("values.is_translated = true").count
 			project[:total_strings] = get_total_keys(project) * project.translations.count
-			project[:translated_strings] = project.translations.joins(:values).where('values.is_translated = true').count
 		end
 	end
 
@@ -170,7 +170,7 @@ class ProjectsController < ApplicationController
 		"project_tab_#{@project.id}"
 	end
 	
-	def get_total_keys(project)
+	def get_total_keys (project)
 		return project.sources.joins(:keys).count
 	end
 end

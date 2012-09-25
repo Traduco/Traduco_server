@@ -23,9 +23,12 @@ class SourcesController < ApplicationController
 
 	def index
 		render :json => {
-			:sources => @project.sources.map { |source| { 
-				:id => source.id,
-				:file_path => source.file_path
+			:sources => @project.sources
+				.map { |source| { 
+					:id => source.id,
+					:file_path => source.file_path,
+					:string_count => source.keys.count,
+					:translated_string_count => source.keys.joins(:values).where("values.is_translated = true").count
 		}}}
 	end
 
@@ -53,7 +56,9 @@ class SourcesController < ApplicationController
 		render :json => {
 			:id => @source.id,
 			:file_path => @source.file_path,
-			:strings => strings
+			:strings => strings.sort { |a, b|
+				a[:key] <=> b[:key]
+			}
 		}
 	end
 

@@ -51,6 +51,48 @@ class Project < ActiveRecord::Base
         # Pull the repository.
         wrapper = GitSSHWrapper.new(:private_key => self.repository_ssh_key, :log_level => 'ERROR')
         logger.debug `cd #{self.get_repository_path} && env #{wrapper.cmd_prefix} git pull `
+
+        # Update the keys and their default_values.
+        loc_processor = ProcessorFactory.get_processor self.project_type
+
+        self.sources.each do |source|
+            # Parse the file.
+            strings = loc_processor.parse_file(get_repository_path + source.file_path)
+
+            # Retrieve the source's keys and corresponding default_values.
+            keys = source.keys.includes(:default_value)
+
+            # Add the new keys an update the existing ones.
+            strings.each do |string|
+                key = (keys.select { |k| k.key == string[:key] }).first
+
+                if !key
+                    key = Key.new
+
+                    key.key = string[:key]
+                    key_value = Value.new
+                else
+                    key_value = key.default_value
+                end
+
+                key_value.value = string[:value]
+                key_value.comment = string[:comment]
+
+                if !key.default_value
+                    key.default_value = key_value
+                    source.keys << key
+                end
+            end
+
+            # Remove the keys that were deleted.
+            source.keys.each do |key|
+                key.destroy if (strings.select { |s| 
+                    s[:key] == key.key 
+                }).size == 0 
+            end
+
+            source.save
+        end
     ensure
         wrapper.unlink if wrapper
     end

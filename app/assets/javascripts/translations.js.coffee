@@ -161,7 +161,7 @@ $ ->
 		# Retrieve a list of files.
 		$.ajax(pageUrl + "/sources").done((data) =>
 			@files($.map(data.sources, (value, index) =>
-				new_file = new FileViewModel(value.id, value.file_path, 1, 1)
+				new_file = new FileViewModel(value.id, value.file_path, value.string_count, value.translated_string_count)
 				
 				# If there is no file currently being edited, set this one as the current file.
 				@setEditingFile(new_file) if @editingFile() == null
