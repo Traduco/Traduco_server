@@ -77,7 +77,7 @@ class IOSProcessor
 		translation_file_path, translation_directory_path = find_translation_file original_file_path, language_format
 
 		# Make sure that the directory exists.
-		Dir.mkpath translation_directory_path
+		Dir.mkpath translation_directory_path if ! Dir.exists? translation_directory_path
 
 		file = File.new(translation_file_path, 'w:UTF-16LE')
 		data.each do |hash|

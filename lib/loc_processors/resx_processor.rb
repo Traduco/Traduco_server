@@ -50,8 +50,9 @@ class ResxProcessor
 		translation_file_path, translation_directory_path = find_translation_file original_file_path, language_format
 
 		# we now need to load in memory the original file
-		#------------------------------------------------
-		parser = XML::Parser.file(original_file_path)
+		#------------------------------------------------	
+		XML.indent_tree_output = true
+		parser = XML::Parser.file(original_file_path, :options => XML::Parser::Options::NOBLANKS)
 		document = parser.parse
 
 		# we can now modify the values based on the received data
