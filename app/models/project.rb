@@ -30,6 +30,7 @@ class Project < ActiveRecord::Base
         Dir.mkpath self.get_repository_path
 
         # Clone the repository.
+		#----------------------
         wrapper = GitSSHWrapper.new(:private_key => self.repository_ssh_key, :log_level => 'ERROR')
         logger.debug `env #{wrapper.cmd_prefix} git clone #{self.repository_address} #{self.get_repository_path} 2>&1`
         
