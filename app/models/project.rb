@@ -49,6 +49,7 @@ class Project < ActiveRecord::Base
         end
 
         # Pull the repository.
+		#---------------------
         wrapper = GitSSHWrapper.new(:private_key => self.repository_ssh_key, :log_level => 'ERROR')
         logger.debug `cd #{self.get_repository_path} && env #{wrapper.cmd_prefix} git pull 2>&1`
 
