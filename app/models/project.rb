@@ -31,7 +31,7 @@ class Project < ActiveRecord::Base
 
         # Clone the repository.
         wrapper = GitSSHWrapper.new(:private_key => self.repository_ssh_key, :log_level => 'ERROR')
-        logger.debug `env #{wrapper.cmd_prefix} git clone #{self.repository_address} #{self.get_repository_path}`
+        logger.debug `env #{wrapper.cmd_prefix} git clone #{self.repository_address} #{self.get_repository_path} 2>&1`
         
         # Update the project to indicate that it was cloned.
         self.update_attributes(
@@ -50,7 +50,7 @@ class Project < ActiveRecord::Base
 
         # Pull the repository.
         wrapper = GitSSHWrapper.new(:private_key => self.repository_ssh_key, :log_level => 'ERROR')
-        logger.debug `cd #{self.get_repository_path} && env #{wrapper.cmd_prefix} git pull `
+        logger.debug `cd #{self.get_repository_path} && env #{wrapper.cmd_prefix} git pull 2>&1`
 
         # Update the keys and their default_values.
         loc_processor = ProcessorFactory.get_processor self.project_type
@@ -136,13 +136,13 @@ class Project < ActiveRecord::Base
 
         # Add the files to the repository.
         wrapper = GitSSHWrapper.new(:private_key => self.repository_ssh_key, :log_level => 'ERROR')
-        logger.debug `cd #{self.get_repository_path} && env #{wrapper.cmd_prefix} git add #{file_list.join(" ")}`
+        logger.debug `cd #{self.get_repository_path} && env #{wrapper.cmd_prefix} git add #{file_list.join(" ")} 2>&1`
 
         # Commit those added files.
-        logger.debug `cd #{self.get_repository_path} && env #{wrapper.cmd_prefix} git commit -am "Traduco Commit of '#{self.name}'."`
+        logger.debug `cd #{self.get_repository_path} && env #{wrapper.cmd_prefix} git commit -am "Traduco Commit of '#{self.name}'." 2>&1`
 
         # Push the repository.
-        logger.debug `cd #{self.get_repository_path} && env #{wrapper.cmd_prefix} git push origin master`
+        logger.debug `cd #{self.get_repository_path} && env #{wrapper.cmd_prefix} git push origin master 2>&1`
     ensure
         wrapper.unlink if wrapper
     end
