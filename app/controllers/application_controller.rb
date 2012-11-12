@@ -42,8 +42,8 @@ class ApplicationController < ActionController::Base
     end
 
     def is_translator
-        @is_translator ||= (@translation && (@translation.users.map { |user| user.id }).include?(@current_user.id)) || 
-            (@translations && (@translations.map { |translation| translation.users }).flatten.include?(@current_user.id)) ||
+        @is_translator ||= (@translation && @translation.users.map { |user| user.id }.include?(@current_user.id)) || 
+            (@translations && @project && !@translations.empty?) ||
             is_project_admin
     end
 

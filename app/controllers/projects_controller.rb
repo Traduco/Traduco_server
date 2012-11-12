@@ -10,6 +10,7 @@ class ProjectsController < ApplicationController
 	before_filter :get_project, :only => [:pull, :push, :add_files, :set_tab, :show, :new, :edit, :update, :destroy]
 	before_filter :get_additional_data, :only => [:pull, :push, :new, :edit, :update, :destroy]
 	before_filter :check_project_admin, :only => [:pull, :push, :add_files, :edit, :update, :destroy]
+	before_filter :get_translations, :only => [:show, :set_tab]
 	before_filter :check_translator, :only => [:show, :set_tab]
 
 	def layout_setup
@@ -32,6 +33,14 @@ class ProjectsController < ApplicationController
 		@project_types = ProjectType.all.map { |project_type| [project_type.name, project_type.id] }
 		@languages = Language.all.map { |language| [language.format + " - " + language.name, language.id] }
 		@repository_types = RepositoryType.all.map { |repository_type| [repository_type.name, repository_type.id] }
+	end
+
+	def get_translations
+		if is_project_admin
+			@translations = @project.translations
+		else
+			@translations = @current_user.translations.find_all { |translation| translation.project_id == @project.id }
+		end
 	end
 
 	def pull
@@ -90,12 +99,6 @@ class ProjectsController < ApplicationController
 	end
 
 	def show
-		if is_project_admin
-			@translations = @project.translations
-		else
-			@translations = @current_user.translations
-		end
-
 		# Tab.
 		@tab = session[project_tab_session_key] ? session[project_tab_session_key] : :translations
 		
