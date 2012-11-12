@@ -9,12 +9,12 @@ class User < ActiveRecord::Base
     has_and_belongs_to_many :languages
     has_and_belongs_to_many :translations
     has_and_belongs_to_many :projects
-	
+    
     # Validations.
-	validates :new_password, :confirmation => :true
-	validates :email, :presence => true, :format => { :with => /[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}/ }
-	validates :first_name, :presence => true
-	validates :last_name, :presence => true	
+    validates :new_password, :confirmation => :true
+    validates :email, :presence => true, :format => { :with => /[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}/ }
+    validates :first_name, :presence => true
+    validates :last_name, :presence => true 
 
     # Triggers.
     before_save :hash_new_password, :if => :password_changed?
@@ -50,7 +50,7 @@ class User < ActiveRecord::Base
 
     private
 
-    # This is where the real work is done, store the BCrypt has in the
+    # This is where the real work is done, store the BCrypt hash in the
     # database
     def hash_new_password
         self.password_salt = BCrypt::Engine.generate_salt

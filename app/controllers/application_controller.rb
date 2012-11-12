@@ -26,7 +26,7 @@ class ApplicationController < ActionController::Base
     end
 
     def check_translator
-        redirect_to_project if !is_translator
+        restricted_redirect_to(root_url) if !is_translator
     end
 
     def current_user
@@ -42,7 +42,9 @@ class ApplicationController < ActionController::Base
     end
 
     def is_translator
-        @is_translator ||= (@translation && (@translation.users.map { |user| user.id }).include?(@current_user.id)) || is_project_admin
+        @is_translator ||= (@translation && (@translation.users.map { |user| user.id }).include?(@current_user.id)) || 
+            (@translations && (@translations.map { |translation| translation.users }).flatten.include?(@current_user.id)) ||
+            is_project_admin
     end
 
     protected
