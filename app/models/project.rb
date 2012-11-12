@@ -167,8 +167,8 @@ class Project < ActiveRecord::Base
 
         # Use the loc processor to retrieve all the keys and values from that file.
         strings = loc_processor.parse_file(get_repository_path + file_path)
-
-        # Create the new Source object for this file.
+        
+		# Create the new Source object for this file.
         new_source = Source.new
         new_source.file_path = file_path
 
