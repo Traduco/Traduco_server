@@ -36,7 +36,7 @@ class ProjectsController < ApplicationController
 	end
 
 	def get_translations
-		if is_project_admin
+		if is_project_admin 
 			@translations = @project.translations
 		else
 			@translations = @current_user.translations.find_all { |translation| translation.project_id == @project.id }
