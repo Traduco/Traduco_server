@@ -12,6 +12,22 @@ $(document).ready ->
 			}	
 		})
 
-		return
+
+	project_type_dropdown = $(".project_type_dropdown")
+	project_type_dropdown.change ->
+		#$this = $(this)
+		#ios_element = $("#ios-base-language")
+        # Get the selected country Id.
+        language_id = $this.val()
+        test = $(".project-type-dropdown")
+
+        #if language_id == 0
+        #    ios_element.hide(false)
+        #else
+        #    ios_element.hide(true)
+
+
+    project_type_dropdown.trigger "change"
 
 	return
+

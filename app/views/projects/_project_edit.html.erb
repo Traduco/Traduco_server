@@ -18,14 +18,21 @@
   	<div class="control-group">
 		<%= p.label :project_type, "Type", :class => "control-label" %>
 	    <div class="controls">
-      		<%= p.select :project_type_id, project_types, {}, :disabled => edit %>
+      		<%= p.select :project_type_id, project_types, {}, :class => "project-type-dropdown", :disabled => edit %>
 	    </div>
   	</div>
 
   	<div class="control-group">
-		<%= p.label :default_language, "Base language", :class => "control-label" %>
+		<%= p.label :default_language, "Default language", :class => "control-label" %>
 	    <div class="controls">
-      		<%= p.select :default_language_id, languages, {}, :disabled => edit %>
+      		<%= p.select :default_language_id, languages, {}, :class => "language-dropdown" %>
+	    </div>
+  	</div>
+
+  	<div class="control-group" id="ios-base-language">
+		<%= p.label :using_base_language, "Use base language", :class => "control-label" %>
+	    <div class="controls">
+      		<%= p.check_box :using_base_language, :disabled => edit %>
 	    </div>
   	</div>
 

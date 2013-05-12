@@ -7,7 +7,7 @@ require_dependency 'loc_processors/processor_factory'
 
 class Project < ActiveRecord::Base
     # Attributes.
-    attr_accessible :name, :default_language_id, :project_type_id, :repository_address, :repository_ssh_key, :repository_type_id, :user_ids, :cloned
+    attr_accessible :name, :default_language_id, :project_type_id, :repository_address, :repository_ssh_key, :repository_type_id, :user_ids, :cloned, :using_base_language
     attr_accessor :user_ids
 
     # Associations.

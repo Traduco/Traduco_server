@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120918130445) do
+ActiveRecord::Schema.define(:version => 20130413151950) do
 
   create_table "delayed_jobs", :force => true do |t|
     t.integer  "priority",   :default => 0
@@ -66,8 +66,9 @@ ActiveRecord::Schema.define(:version => 20120918130445) do
     t.integer  "repository_type_id"
     t.string   "repository_address"
     t.text     "repository_ssh_key"
-    t.datetime "created_at",          :null => false
-    t.datetime "updated_at",          :null => false
+    t.datetime "created_at",                             :null => false
+    t.datetime "updated_at",                             :null => false
+    t.boolean  "using_base_language", :default => false
   end
 
   create_table "projects_users", :id => false, :force => true do |t|
