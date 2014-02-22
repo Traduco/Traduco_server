@@ -17,3 +17,5 @@
 *.swp
 *.swo
 /repositories
+
+Gemfile.lock

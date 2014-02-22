@@ -46,3 +46,6 @@ gem 'git-ssh-wrapper'
 
 # to parse XML files
 gem 'libxml-ruby'
+
+# to provide an JS environment
+gem 'therubyracer'
