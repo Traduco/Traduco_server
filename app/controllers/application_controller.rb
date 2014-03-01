@@ -9,11 +9,8 @@ class ApplicationController < ActionController::Base
 
     def check_auth
         if !current_user
-            redirect_to login_path, :notice => {
-                :type => :error,
-                :title => "Forbidden!",
-                :message => "You can't access this area without being authenticated."
-            }
+            redirect_to :root, :status => 401
+            return false
         end
     end
 
