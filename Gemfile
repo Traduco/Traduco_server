@@ -49,3 +49,6 @@ gem 'libxml-ruby'
 
 # to provide an JS environment
 gem 'therubyracer'
+
+# Enable CORS 
+gem 'rack-cors', :require => 'rack/cors'

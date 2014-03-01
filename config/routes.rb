@@ -1,4 +1,7 @@
 Traduco::Application.routes.draw do
+
+    resources :cors
+    
     root :to => "projects#index"
 
     scope "/projects/:id" do

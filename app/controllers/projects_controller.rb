@@ -4,7 +4,7 @@ require_dependency 'loc_processors/processor_factory'
 class ProjectsController < ApplicationController
 	include HashingHelpers
 
-	before_filter :check_auth
+	#before_filter :check_auth
 	before_filter :check_site_admin, :only => [:new, :create]
 	before_filter :layout_setup
 	before_filter :get_project, :only => [:pull, :push, :add_files, :set_tab, :show, :new, :edit, :update, :destroy]
@@ -115,18 +115,27 @@ class ProjectsController < ApplicationController
 	end
 
 	def index
-		if is_site_admin
+		#if is_site_admin
 			@projects = Project.find(:all, :include => :users)
-		else
+		#else
 			# Retrieve all the projects for our user (as project admin and translator)
-			@projects = @current_user.projects + @current_user.translations.map { |translation| translation.project }	
-			@projects.uniq! { |project| project.id }
-		end
+		#	@projects = @current_user.projects + @current_user.translations.map { |translation| translation.project }	
+		#	@projects.uniq! { |project| project.id }
+		#end
 		
 		@projects.each do |project|
 			project[:translated_strings] = project.translations.joins(:values).where("values.is_translated = true").count
 			project[:total_strings] = get_total_keys(project) * project.translations.count
 		end
+		render :json => { 
+			:data => @projects.map { |project| {
+				:id => project.id,
+				:name => project.name,
+				:translatedStrings => project.translated_strings,
+				:totalStrings => project.total_strings
+			}},
+			:total => @projects.count
+		}
 	end
 
 	def edit
