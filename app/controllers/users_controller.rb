@@ -24,10 +24,15 @@ class UsersController < ApplicationController
 
 	def index
 		@users = User.all
-	end
 
-	def new
-		@user = User.new
+		render :json => { 
+			:data => @users.map { |user| {
+				:email => user.email,
+				:first_name => user.first_name,
+				:last_name => user.last_name
+			}},
+			:total => @users.count
+		}
 	end
 
 	def edit
