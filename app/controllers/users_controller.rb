@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
 	
-	before_filter :check_auth
-	before_filter :check_site_admin, :only => [:index, :new, :create, :destroy]
+	# before_filter :check_auth
+	# before_filter :check_site_admin, :only => [:index, :new, :create, :destroy]
 	before_filter :layout_setup
 	before_filter :get_data, :only => [:edit, :update, :destroy]
 	before_filter :get_languages, :only => [:new, :edit, :update]
@@ -29,7 +29,8 @@ class UsersController < ApplicationController
 			:data => @users.map { |user| {
 				:email => user.email,
 				:first_name => user.first_name,
-				:last_name => user.last_name
+				:last_name => user.last_name,
+				:full_name => user.full_name
 			}},
 			:total => @users.count
 		}
