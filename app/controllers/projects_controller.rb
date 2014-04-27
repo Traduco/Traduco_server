@@ -36,11 +36,12 @@ class ProjectsController < ApplicationController
 	end
 
 	def get_translations
-		if is_project_admin 
-			@translations = @project.translations
-		else
-			@translations = @current_user.translations.find_all { |translation| translation.project_id == @project.id }
-		end
+		# if is_project_admin 
+			# @translations = @project.translations
+		# else
+		# 	@translations = @current_user.translations.find_all { |translation| translation.project_id == @project.id }
+		# end
+		@translations = []
 	end
 
 	def pull
@@ -112,6 +113,7 @@ class ProjectsController < ApplicationController
 		@translations.each do |translation|
 			translation[:translated_strings] = translation.values.where(:is_translated => true).count
 		end
+
 	end
 
 	def index

@@ -26,11 +26,12 @@ class UsersController < ApplicationController
 		@users = User.all
 
 		render :json => { 
-			:data => @users.map { |user| {
-				:email => user.email,
+			:data 	=> @users.map { |user| {
+				:email 		=> user.email,
 				:first_name => user.first_name,
-				:last_name => user.last_name,
-				:full_name => user.full_name
+				:last_name 	=> user.last_name,
+				:full_name 	=> user.full_name,
+				:id 		=> user.id
 			}},
 			:total => @users.count
 		}
@@ -38,6 +39,26 @@ class UsersController < ApplicationController
 
 	def edit
 		@user.language_ids = @user.languages.map { |language| language.id }
+	end
+
+	def show
+		@user = User.find params[:id], :include => [
+			:languages
+		]
+		render :json => { 
+			:user =>  {
+				:email 		=> @user.email,
+				:first_name => @user.first_name,
+				:last_name 	=> @user.last_name,
+				:full_name 	=> @user.full_name,
+				:id 		=> @user.id,
+				:languages 	=> @user.languages.map { |l| {
+					:id 		=> l.id,
+					:format 	=> l.format,
+					:name 		=> l.name
+				}}
+			}
+		}
 	end
 
 	def create
