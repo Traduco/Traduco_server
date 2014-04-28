@@ -114,6 +114,15 @@ class ProjectsController < ApplicationController
 			translation[:translated_strings] = translation.values.where(:is_translated => true).count
 		end
 
+		render :json => { 
+			:project =>  {
+				:id => @project.id,
+				:name => @project.name,
+				#:translatedStrings => @project.translated_strings,
+				:totalStrings => @project.total_strings
+			}
+		}
+
 	end
 
 	def index
